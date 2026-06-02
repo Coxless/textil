@@ -8,6 +8,7 @@
     "build": "turbo build",
     "test": "turbo test",
     "lint": "turbo lint",
+    "ci:lint": "biome ci .",
     "fix": "biome check --write ."
   },
   "devDependencies": {

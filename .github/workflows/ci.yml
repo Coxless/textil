@@ -20,7 +20,7 @@ jobs:
         run: bun install
 
       - name: Lint & format check
-        run: bun x biome ci .
+        run: bun run ci:lint
 
       - name: Build
         run: bun run build
