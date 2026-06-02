@@ -1,1 +1,7 @@
-export const VERSION = "0.0.1";
+export { VERSION } from "./version.js";
+export * from "./types/grid.js";
+export * from "./types/options.js";
+export { GridEditor } from "./editor/GridEditor.js";
+export { History } from "./editor/History.js";
+export type { Command } from "./editor/History.js";
+export { fill, findReplace, textInsert, cloneCells } from "./editor/operations.js";
