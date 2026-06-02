@@ -118,7 +118,12 @@ export class GridEditor {
     const before = cloneCells(this.cells);
     const after = cloneCells(this.cells);
     fill(after, srcRect, " ");
-    const dstRect: Rect = { row: dstRow, col: dstCol, width: srcRect.width, height: srcRect.height };
+    const dstRect: Rect = {
+      row: dstRow,
+      col: dstCol,
+      width: srcRect.width,
+      height: srcRect.height,
+    };
     this.applyRegionInto(after, dstRect, region);
     this.history.push(new SnapshotCommand(this.cells, before, after));
   }
@@ -159,7 +164,11 @@ export class GridEditor {
       for (let c = 0; c < rect.width; c++) {
         const tr = rect.row + r;
         const tc = rect.col + c;
-        if (this.inBounds(tr, tc) && regionCells[r] !== undefined && regionCells[r][c] !== undefined) {
+        if (
+          this.inBounds(tr, tc) &&
+          regionCells[r] !== undefined &&
+          regionCells[r][c] !== undefined
+        ) {
           buffer[tr][tc] = regionCells[r][c];
         }
       }
