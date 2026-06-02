@@ -6,16 +6,18 @@ export interface Command {
 export class History {
   private stack: Command[] = [];
   private cursor = -1;
-  private readonly maxSteps = 100;
+
+  constructor(private readonly maxSteps = 100) {}
 
   push(command: Command): void {
-    this.stack = this.stack.slice(0, this.cursor + 1);
+    if (this.cursor < this.stack.length - 1) {
+      this.stack = this.stack.slice(0, this.cursor + 1);
+    }
     this.stack.push(command);
-    this.cursor = this.stack.length - 1;
     if (this.stack.length > this.maxSteps) {
       this.stack.shift();
-      this.cursor = this.stack.length - 1;
     }
+    this.cursor = this.stack.length - 1;
     command.execute();
   }
 

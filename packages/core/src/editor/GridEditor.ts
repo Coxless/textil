@@ -74,19 +74,7 @@ export class GridEditor {
   setRegion(rect: Rect, regionCells: Cell[][]): void {
     const before = cloneCells(this.cells);
     const after = cloneCells(this.cells);
-    for (let r = 0; r < rect.height; r++) {
-      for (let c = 0; c < rect.width; c++) {
-        const tr = rect.row + r;
-        const tc = rect.col + c;
-        if (
-          this.inBounds(tr, tc) &&
-          regionCells[r] !== undefined &&
-          regionCells[r][c] !== undefined
-        ) {
-          after[tr][tc] = regionCells[r][c];
-        }
-      }
-    }
+    this.applyRegionInto(after, rect, regionCells);
     this.history.push(new SnapshotCommand(this.cells, before, after));
   }
 
@@ -130,21 +118,8 @@ export class GridEditor {
     const before = cloneCells(this.cells);
     const after = cloneCells(this.cells);
     fill(after, srcRect, " ");
-    const dstRect: Rect = {
-      row: dstRow,
-      col: dstCol,
-      width: srcRect.width,
-      height: srcRect.height,
-    };
-    for (let r = 0; r < dstRect.height; r++) {
-      for (let c = 0; c < dstRect.width; c++) {
-        const tr = dstRect.row + r;
-        const tc = dstRect.col + c;
-        if (this.inBounds(tr, tc) && region[r] !== undefined && region[r][c] !== undefined) {
-          after[tr][tc] = region[r][c];
-        }
-      }
-    }
+    const dstRect: Rect = { row: dstRow, col: dstCol, width: srcRect.width, height: srcRect.height };
+    this.applyRegionInto(after, dstRect, region);
     this.history.push(new SnapshotCommand(this.cells, before, after));
   }
 
@@ -177,6 +152,18 @@ export class GridEditor {
       cells: cloneCells(this.cells),
       timestamp: Date.now(),
     };
+  }
+
+  private applyRegionInto(buffer: Cell[][], rect: Rect, regionCells: Cell[][]): void {
+    for (let r = 0; r < rect.height; r++) {
+      for (let c = 0; c < rect.width; c++) {
+        const tr = rect.row + r;
+        const tc = rect.col + c;
+        if (this.inBounds(tr, tc) && regionCells[r] !== undefined && regionCells[r][c] !== undefined) {
+          buffer[tr][tc] = regionCells[r][c];
+        }
+      }
+    }
   }
 
   private assertBounds(row: number, col: number): void {
