@@ -1,0 +1,23 @@
+{
+  "name": "textil-cli",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "textil": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "@textil/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "vitest": "^2.0.0"
+  }
+}

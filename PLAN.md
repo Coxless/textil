@@ -4,28 +4,32 @@
 
 ---
 
-## Phase 0 — Monorepo 基盤セットアップ
+## Phase 0 — Monorepo 基盤セットアップ ✅ 完了
 
 **目標:** 全パッケージが共存するモノレポ環境を構築する
 
+> **備考:** パッケージマネージャーは pnpm ではなく **bun** を採用（`mise` で管理）。
+
 ### 成果物
-- pnpm workspaces + Turborepo 構成
+- bun workspaces + Turborepo 構成（`mise` による bun@1.3.14 / node@22 管理）
 - `packages/core`, `packages/cli`, `packages/web` の骨格
 - 共通 TypeScript / ESLint / Prettier 設定
 - Vitest テスト基盤（core / cli）
-- CI（GitHub Actions: lint + test）
+- CI（GitHub Actions: mise-action → bun install → turbo lint build test）
 
 ### タスク
-- [ ] `pnpm-workspace.yaml` + `turbo.json` 設定
-- [ ] `tsconfig.base.json` 作成、各パッケージから extends
-- [ ] `packages/core/package.json` + `src/index.ts` スケルトン
-- [ ] `packages/cli/package.json` + `src/index.ts` スケルトン
-- [ ] `packages/web/` — `create-next-app` (App Router, TypeScript)
-- [ ] Vitest セットアップ（core / cli）
-- [ ] GitHub Actions: `pnpm install → turbo lint test`
+- [x] `package.json` workspaces + `turbo.json` 設定（bun workspaces）
+- [x] `tsconfig.base.json` 作成、各パッケージから extends
+- [x] `packages/core/package.json` + `src/index.ts` スケルトン
+- [x] `packages/cli/package.json` + `src/index.ts` スケルトン
+- [x] `packages/web/` — Next.js 15 App Router (TypeScript) 手動構築
+- [x] Vitest セットアップ（core / cli）
+- [x] GitHub Actions: `mise-action → bun install → turbo lint test`
 
 ### 完了基準
-`pnpm -r build` と `pnpm -r test` がすべて green になること
+`bun run build` と `bun run test` がすべて green になること
+
+**実装結果:** `turbo build` / `turbo test` / `turbo lint` すべて green 確認済み（2026-06-02）
 
 ---
 

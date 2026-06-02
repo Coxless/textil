@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jdx/mise-action@v2
+        with:
+          install: true
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Lint & format check
+        run: bun x biome ci .
+
+      - name: Build
+        run: bun run build
+
+      - name: Test
+        run: bun run test
