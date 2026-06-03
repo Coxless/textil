@@ -8,14 +8,8 @@ function getChar(font: FigFont, ch: string): FigChar {
 	return font.chars.get(ch) ?? font.chars.get(" ") ?? FALLBACK_CHAR;
 }
 
-/** Count trailing spaces in a string (hardblanks are NOT spaces here). */
 function trailingSpaces(s: string): number {
-	let count = 0;
-	for (let i = s.length - 1; i >= 0; i--) {
-		if (s[i] === " ") count++;
-		else break;
-	}
-	return count;
+	return s.length - s.trimEnd().length;
 }
 
 /** Extract the column at `col` from a row array (one char per row). */

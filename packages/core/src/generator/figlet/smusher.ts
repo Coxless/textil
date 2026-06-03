@@ -47,15 +47,14 @@ function smushPair(
 
 	// Opposite pair rule (bit 8)
 	if ((smushBits & SmushMode.OPPOSITE_PAIR) !== 0) {
-		if ((left === "[" && right === "]") || (left === "]" && right === "[")) return "|";
-		if ((left === "{" && right === "}") || (left === "}" && right === "{")) return "|";
-		if ((left === "(" && right === ")") || (left === ")" && right === "(")) return "|";
+		const pair = left < right ? left + right : right + left;
+		if (pair === "()" || pair === "[]" || pair === "{}") return "|";
 	}
 
 	// Big-X rule (bit 16)
 	if ((smushBits & SmushMode.BIG_X) !== 0) {
-		if ((left === "/" && right === "\\") || (left === "\\" && right === "/")) return "X";
-		if ((left === ">" && right === "<") || (left === "<" && right === ">")) return "X";
+		const pair = left < right ? left + right : right + left;
+		if (pair === "/\\" || pair === "<>") return "X";
 	}
 
 	return null;

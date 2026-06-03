@@ -65,9 +65,10 @@ export function parseFont(flfString: string): FigFont {
 
 	const header: FigFontHeader = { hardblank, height, baseline, maxWidth, oldLayout, commentLines };
 
-	if (rest.length >= 1) header.printDirection = parseInt(rest[0] ?? "0", 10);
-	if (rest.length >= 2) header.fullLayout = parseInt(rest[1] ?? "0", 10);
-	if (rest.length >= 3) header.codetagCount = parseInt(rest[2] ?? "0", 10);
+	const optKeys = ["printDirection", "fullLayout", "codetagCount"] as const;
+	for (const [i, key] of optKeys.entries()) {
+		if (rest[i] !== undefined) header[key] = parseInt(rest[i]!, 10);
+	}
 
 	const chars = new Map<string, FigChar>();
 

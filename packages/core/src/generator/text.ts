@@ -25,9 +25,7 @@ function getFont(name: string): FigFont {
 function applyWidth(rows: Cell[][], targetWidth: number): Cell[][] {
 	return rows.map((row) => {
 		if (row.length >= targetWidth) return row.slice(0, targetWidth);
-		const padded = [...row];
-		while (padded.length < targetWidth) padded.push(" " as Cell);
-		return padded;
+		return [...row, ...Array(targetWidth - row.length).fill(" " as Cell)];
 	});
 }
 
@@ -52,22 +50,11 @@ export function generateText(text: string, options?: GenerateOptions): AsciiGrid
 		return renderText(font, line);
 	});
 
-	// Natural width = max row length across all sections
-	let naturalWidth = 0;
-	for (const section of sections) {
-		for (const row of section) {
-			if (row.length > naturalWidth) naturalWidth = row.length;
-		}
-	}
-
+	const naturalWidth = Math.max(0, ...sections.flatMap((s) => s.map((r) => r.length)));
 	const finalWidth = targetWidth ?? naturalWidth;
-	const allRows: Cell[][] = [];
-	for (const section of sections) {
-		const adjusted = finalWidth > 0 ? applyWidth(section, finalWidth) : section;
-		for (const row of adjusted) {
-			allRows.push(row);
-		}
-	}
+	const allRows = sections.flatMap((section) =>
+		finalWidth > 0 ? applyWidth(section, finalWidth) : section,
+	);
 
 	return { width: finalWidth, height: allRows.length, cells: allRows };
 }
