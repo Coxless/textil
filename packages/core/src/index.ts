@@ -5,3 +5,7 @@ export { GridEditor } from "./editor/GridEditor.js";
 export { History } from "./editor/History.js";
 export type { Command } from "./editor/History.js";
 export { fill, findReplace, textInsert, cloneCells } from "./editor/operations.js";
+export { generateText } from "./generator/text.js";
+export { AVAILABLE_FONTS, DEFAULT_FONT } from "./generator/figlet/fonts/index.js";
+export type { AvailableFontName } from "./generator/figlet/fonts/index.js";
+export type { FigFont, FigChar, FigFontHeader } from "./generator/figlet/types.js";
