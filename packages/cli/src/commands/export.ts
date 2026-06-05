@@ -1,8 +1,8 @@
+import { type ExportTarget, exportGrid } from "@textil/core";
 import type { Command } from "commander";
-import { ExportTarget, exportGrid } from "@textil/core";
-import { readStdin } from "../lib/stdin.js";
 import { tryParseGrid } from "../lib/grid-io.js";
 import { printResult } from "../lib/print.js";
+import { readStdin } from "../lib/stdin.js";
 
 export function registerExport(program: Command): void {
   program

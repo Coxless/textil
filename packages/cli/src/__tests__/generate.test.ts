@@ -1,4 +1,4 @@
-import { writeFileSync, unlinkSync } from "node:fs";
+import { unlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -66,11 +66,7 @@ function makeSolidPngBytes(width: number, height: number): Buffer {
   }
 
   const signature = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
-  const ihdrData = concat(
-    u32be(width),
-    u32be(height),
-    new Uint8Array([8, 6, 0, 0, 0]),
-  );
+  const ihdrData = concat(u32be(width), u32be(height), new Uint8Array([8, 6, 0, 0, 0]));
   const ihdr = pngChunk("IHDR", ihdrData);
 
   const scanlineLen = 1 + width * 4;
@@ -131,13 +127,22 @@ describe("textil generate", () => {
   });
 
   it("generates from stdin (piped bytes)", () => {
-    const { stdout, exitCode } = runCli(["generate", "-", "--width", "20"], { stdin: solidPngBytes });
+    const { stdout, exitCode } = runCli(["generate", "-", "--width", "20"], {
+      stdin: solidPngBytes,
+    });
     expect(exitCode).toBe(0);
     expect(stdout.trim().length).toBeGreaterThan(0);
   });
 
   it("--charset braille produces output", () => {
-    const { stdout, exitCode } = runCli(["generate", tmpPng, "--width", "20", "--charset", "braille"]);
+    const { stdout, exitCode } = runCli([
+      "generate",
+      tmpPng,
+      "--width",
+      "20",
+      "--charset",
+      "braille",
+    ]);
     expect(exitCode).toBe(0);
     expect(stdout.trim().length).toBeGreaterThan(0);
   });

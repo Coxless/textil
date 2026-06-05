@@ -4,10 +4,10 @@ function isAsciiGridJson(v: unknown): v is AsciiGridJson {
   if (typeof v !== "object" || v === null) return false;
   const obj = v as Record<string, unknown>;
   return (
-    obj["version"] === 1 &&
-    Array.isArray(obj["rows"]) &&
-    typeof obj["width"] === "number" &&
-    typeof obj["height"] === "number"
+    obj.version === 1 &&
+    Array.isArray(obj.rows) &&
+    typeof obj.width === "number" &&
+    typeof obj.height === "number"
   );
 }
 
