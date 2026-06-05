@@ -82,7 +82,7 @@
 
 ---
 
-## Phase 3 — @textil/core: 画像生成エンジン
+## Phase 3 — @textil/core: 画像生成エンジン ✅ 完了
 
 **目標:** 画像ファイル → ASCII グリッドの変換パイプラインを実装する
 
@@ -93,15 +93,18 @@
 - Node.js: `sharp` バックエンド / ブラウザ: Canvas API バックエンド
 
 ### タスク
-- [ ] `src/generator/image/loader.ts` — Node用（sharp）/ ブラウザ用（Canvas）抽象化
-- [ ] `src/generator/image/brightness.ts` — ピクセル→文字マッピング
-- [ ] `src/generator/image/edge.ts` — Sobel フィルタ実装
-- [ ] `src/generator/image/charsets.ts` — Standard / Braille / Block 定義
-- [ ] `src/generator/image.ts` — `generateImage()` 公開 API
-- [ ] テスト用フィクスチャ（小サイズPNG）でスナップショットテスト
+- [x] `src/generator/image/loader/node.ts` — sharp バックエンド（dynamic import）
+- [x] `src/generator/image/loader/browser.ts` — Canvas API バックエンド
+- [x] `src/generator/image/sampler.ts` — ピクセル→文字マッピング（standard / braille / block）
+- [x] `src/generator/image/edge.ts` — Sobel フィルタ実装
+- [x] `src/generator/image/charsets.ts` — Standard / Braille / Block 定義
+- [x] `src/generator/image.ts` — `generateImage()` 公開 API
+- [x] テスト（PNG ヘルパー + 各モジュール単体テスト + 統合テスト）
 
 ### 完了基準
 `generateImage(pngBuffer, { width: 40, charset: "braille" })` が AsciiGrid を返すこと
+
+**実装結果:** 全 143 テスト green 確認済み（2026-06-05）
 
 ---
 
