@@ -7,9 +7,9 @@ export const AVAILABLE_CHARSETS = ["standard", "braille", "block"] as const;
  * Lower brightness → earlier character (sparse/space), higher → later (dense/filled).
  */
 export function brightnessToChar(brightness: number, charset: string): string {
-	const clamped = Math.max(0, Math.min(1, brightness));
-	const index = Math.round(clamped * (charset.length - 1));
-	return charset[index];
+  const clamped = Math.max(0, Math.min(1, brightness));
+  const index = Math.round(clamped * (charset.length - 1));
+  return charset[index];
 }
 
 /**
@@ -17,16 +17,16 @@ export function brightnessToChar(brightness: number, charset: string): string {
  * Uses Unicode half-block elements: space=none, ▀=top, ▄=bottom, █=both.
  */
 export function brightnessToBlock(
-	topBrightness: number,
-	bottomBrightness: number,
-	threshold: number,
+  topBrightness: number,
+  bottomBrightness: number,
+  threshold: number,
 ): string {
-	const top = topBrightness > threshold;
-	const bottom = bottomBrightness > threshold;
-	if (top && bottom) return "█";
-	if (top) return "▀";
-	if (bottom) return "▄";
-	return " ";
+  const top = topBrightness > threshold;
+  const bottom = bottomBrightness > threshold;
+  if (top && bottom) return "█";
+  if (top) return "▀";
+  if (bottom) return "▄";
+  return " ";
 }
 
 /**
@@ -40,14 +40,14 @@ export function brightnessToBlock(
  *   dot7(col0,row3)=bit6  dot8(col1,row3)=bit7
  */
 export function pixelsToBraille(pixels: readonly boolean[][]): string {
-	let offset = 0;
-	if (pixels[0]?.[0]) offset |= 1 << 0;
-	if (pixels[0]?.[1]) offset |= 1 << 1;
-	if (pixels[0]?.[2]) offset |= 1 << 2;
-	if (pixels[1]?.[0]) offset |= 1 << 3;
-	if (pixels[1]?.[1]) offset |= 1 << 4;
-	if (pixels[1]?.[2]) offset |= 1 << 5;
-	if (pixels[0]?.[3]) offset |= 1 << 6;
-	if (pixels[1]?.[3]) offset |= 1 << 7;
-	return String.fromCodePoint(0x2800 + offset);
+  let offset = 0;
+  if (pixels[0]?.[0]) offset |= 1 << 0;
+  if (pixels[0]?.[1]) offset |= 1 << 1;
+  if (pixels[0]?.[2]) offset |= 1 << 2;
+  if (pixels[1]?.[0]) offset |= 1 << 3;
+  if (pixels[1]?.[1]) offset |= 1 << 4;
+  if (pixels[1]?.[2]) offset |= 1 << 5;
+  if (pixels[0]?.[3]) offset |= 1 << 6;
+  if (pixels[1]?.[3]) offset |= 1 << 7;
+  return String.fromCodePoint(0x2800 + offset);
 }
