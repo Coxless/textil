@@ -47,15 +47,17 @@ function averageRegion(
 	x1: number,
 	y1: number,
 ): number {
+	const cx1 = Math.max(x1, x0 + 1);
+	const cy1 = Math.max(y1, y0 + 1);
 	let sum = 0;
 	let count = 0;
-	for (let y = y0; y < y1; y++) {
-		for (let x = x0; x < x1; x++) {
+	for (let y = y0; y < cy1; y++) {
+		for (let x = x0; x < cx1; x++) {
 			sum += map[y * mapWidth + x];
 			count++;
 		}
 	}
-	return count > 0 ? sum / count : 0;
+	return sum / count;
 }
 
 /**
@@ -79,7 +81,7 @@ export function sampleGrid(
 		for (let col = 0; col < outW; col++) {
 			const x0 = Math.floor((col / outW) * srcWidth);
 			const x1 = Math.floor(((col + 1) / outW) * srcWidth);
-			line.push(averageRegion(map, srcWidth, x0, y0, Math.max(x1, x0 + 1), Math.max(y1, y0 + 1)));
+			line.push(averageRegion(map, srcWidth, x0, y0, x1, y1));
 		}
 		grid.push(line);
 	}
@@ -119,14 +121,7 @@ export function sampleBrailleGrid(
 					const x1 = Math.floor(((px + 1) / pixW) * srcWidth);
 					const y0 = Math.floor((py / pixH) * srcHeight);
 					const y1 = Math.floor(((py + 1) / pixH) * srcHeight);
-					const brightness = averageRegion(
-						map,
-						srcWidth,
-						x0,
-						y0,
-						Math.max(x1, x0 + 1),
-						Math.max(y1, y0 + 1),
-					);
+					const brightness = averageRegion(map, srcWidth, x0, y0, x1, y1);
 					block[sc][sr] = brightness > threshold;
 				}
 			}
@@ -162,9 +157,7 @@ export function sampleBlockGrid(
 				const x1 = Math.floor(((col + 1) / outW) * srcWidth);
 				const y0 = Math.floor((py / pixH) * srcHeight);
 				const y1 = Math.floor(((py + 1) / pixH) * srcHeight);
-				pair.push(
-					averageRegion(map, srcWidth, x0, y0, Math.max(x1, x0 + 1), Math.max(y1, y0 + 1)),
-				);
+				pair.push(averageRegion(map, srcWidth, x0, y0, x1, y1));
 			}
 			line.push(pair);
 		}

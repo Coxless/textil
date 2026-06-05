@@ -12,9 +12,7 @@ export async function loadImageBrowser(source: ImageSource): Promise<RawImage> {
 	}
 
 	const bytes = source instanceof Uint8Array ? source : new Uint8Array(source);
-	const ab = new ArrayBuffer(bytes.byteLength);
-	new Uint8Array(ab).set(bytes);
-	const blob = new Blob([ab]);
+	const blob = new Blob([bytes]);
 	const bitmap = await createImageBitmap(blob);
 	const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
 	const ctx = canvas.getContext("2d");

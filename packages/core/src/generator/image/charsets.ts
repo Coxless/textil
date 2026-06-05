@@ -51,9 +51,3 @@ export function pixelsToBraille(pixels: readonly boolean[][]): string {
 	if (pixels[1]?.[3]) offset |= 1 << 7;
 	return String.fromCodePoint(0x2800 + offset);
 }
-
-export function resolveCharset(name: string): string {
-	if (name === "braille" || name === "block") return name;
-	if (name === "standard") return STANDARD_CHARSET;
-	return name; // custom charset string
-}

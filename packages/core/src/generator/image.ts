@@ -10,7 +10,6 @@ import { sobelEdgeDetect } from "./image/edge.js";
 import type { ImageSource } from "./image/loader/types.js";
 import {
 	applyContrast,
-	charHeight,
 	sampleBlockGrid,
 	sampleBrailleGrid,
 	sampleGrid,
@@ -21,13 +20,13 @@ import type { RawImage } from "./image/types.js";
 const DEFAULT_CHAR_WIDTH = 80;
 const DEFAULT_THRESHOLD = 0.5;
 
+const _loaderPromise =
+	typeof process !== "undefined" && process.versions?.node != null
+		? import("./image/loader/node.js").then((m) => m.loadImageNode)
+		: import("./image/loader/browser.js").then((m) => m.loadImageBrowser);
+
 async function loadImage(source: ImageSource): Promise<RawImage> {
-	if (typeof process !== "undefined" && process.versions?.node != null) {
-		const { loadImageNode } = await import("./image/loader/node.js");
-		return loadImageNode(source);
-	}
-	const { loadImageBrowser } = await import("./image/loader/browser.js");
-	return loadImageBrowser(source);
+	return (await _loaderPromise)(source);
 }
 
 /**
@@ -61,7 +60,6 @@ export async function generateImage(
 		gray = sobelEdgeDetect(gray, raw.width, raw.height);
 	}
 
-	const outH = charHeight(raw.width, raw.height, charWidth);
 	let cells: Cell[][];
 
 	if (charset === "braille") {
@@ -76,5 +74,5 @@ export async function generateImage(
 		cells = grid.map((row) => row.map((brightness) => brightnessToChar(brightness, cs)));
 	}
 
-	return { width: charWidth, height: outH, cells };
+	return { width: charWidth, height: cells.length, cells };
 }
