@@ -8,3 +8,8 @@ export interface GenerateOptions {
 }
 
 export type ExportTarget = "plain" | "github" | "ansi" | "json";
+
+export interface ExportResult {
+  output: string;
+  warnings: string[];
+}

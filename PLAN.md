@@ -43,19 +43,21 @@
 - ユニットテスト完備
 
 ### タスク
-- [ ] `src/types/grid.ts` — `Cell`, `AsciiGrid`, `GridSnapshot` 型
-- [ ] `src/types/options.ts` — `GenerateOptions`, `ExportTarget` 型
-- [ ] `src/editor/GridEditor.ts` — セル読み書き, 矩形選択, コピー/移動
-- [ ] `src/editor/History.ts` — コマンドパターンで Undo/Redo
-- [ ] `src/editor/operations.ts` — fill, findReplace, textInsert
-- [ ] ユニットテスト: GridEditor + History（100ステップ境界含む）
+- [x] `src/types/grid.ts` — `Cell`, `AsciiGrid`, `GridSnapshot` 型
+- [x] `src/types/options.ts` — `GenerateOptions`, `ExportTarget` 型
+- [x] `src/editor/GridEditor.ts` — セル読み書き, 矩形選択, コピー/移動
+- [x] `src/editor/History.ts` — コマンドパターンで Undo/Redo
+- [x] `src/editor/operations.ts` — fill, findReplace, textInsert
+- [x] ユニットテスト: GridEditor + History（100ステップ境界含む）
 
 ### 完了基準
 `GridEditor` の全操作がテストで検証済みで、Undo/Redo が正確に機能すること
 
+**実装結果:** 全テスト green 確認済み（2026-06-03）
+
 ---
 
-## Phase 2 — @textil/core: テキスト生成（FIGlet エンジン）
+## Phase 2 — @textil/core: テキスト生成（FIGlet エンジン） ✅ 完了
 
 **目標:** テキスト → ASCII グリッドの生成エンジンを実装する
 
@@ -66,19 +68,21 @@
 - ブラウザ / Node.js 両対応（isomorphic）
 
 ### タスク
-- [ ] `src/generator/figlet/parser.ts` — `.flf` ファイルパース
-- [ ] `src/generator/figlet/renderer.ts` — 文字合成、スマッシングルール
-- [ ] `src/generator/figlet/fonts/` — フォントファイル同梱
-- [ ] `src/generator/text.ts` — `generateText()` 公開 API
-- [ ] フォント幅スケーリング（target width → scale factor）
-- [ ] ユニットテスト: 各フォントで "Hello" が期待グリッドに一致
+- [x] `src/generator/figlet/parser.ts` — `.flf` ファイルパース
+- [x] `src/generator/figlet/renderer.ts` — 文字合成、スマッシングルール
+- [x] `src/generator/figlet/fonts/` — フォントファイル同梱（12種）
+- [x] `src/generator/text.ts` — `generateText()` 公開 API
+- [x] フォント幅スケーリング（target width → truncate/pad）
+- [x] ユニットテスト: 各フォントで "Hello" が期待グリッドに一致
 
 ### 完了基準
 `generateText("Hello", { font: "doom", width: 80 })` が正しい AsciiGrid を返すこと
 
+**実装結果:** 全 90 テスト green 確認済み（2026-06-03）
+
 ---
 
-## Phase 3 — @textil/core: 画像生成エンジン
+## Phase 3 — @textil/core: 画像生成エンジン ✅ 完了
 
 **目標:** 画像ファイル → ASCII グリッドの変換パイプラインを実装する
 
@@ -89,15 +93,18 @@
 - Node.js: `sharp` バックエンド / ブラウザ: Canvas API バックエンド
 
 ### タスク
-- [ ] `src/generator/image/loader.ts` — Node用（sharp）/ ブラウザ用（Canvas）抽象化
-- [ ] `src/generator/image/brightness.ts` — ピクセル→文字マッピング
-- [ ] `src/generator/image/edge.ts` — Sobel フィルタ実装
-- [ ] `src/generator/image/charsets.ts` — Standard / Braille / Block 定義
-- [ ] `src/generator/image.ts` — `generateImage()` 公開 API
-- [ ] テスト用フィクスチャ（小サイズPNG）でスナップショットテスト
+- [x] `src/generator/image/loader/node.ts` — sharp バックエンド（dynamic import）
+- [x] `src/generator/image/loader/browser.ts` — Canvas API バックエンド
+- [x] `src/generator/image/sampler.ts` — ピクセル→文字マッピング（standard / braille / block）
+- [x] `src/generator/image/edge.ts` — Sobel フィルタ実装
+- [x] `src/generator/image/charsets.ts` — Standard / Braille / Block 定義
+- [x] `src/generator/image.ts` — `generateImage()` 公開 API
+- [x] テスト（PNG ヘルパー + 各モジュール単体テスト + 統合テスト）
 
 ### 完了基準
 `generateImage(pngBuffer, { width: 40, charset: "braille" })` が AsciiGrid を返すこと
+
+**実装結果:** 全 143 テスト green 確認済み（2026-06-05）
 
 ---
 
