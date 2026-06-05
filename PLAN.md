@@ -132,7 +132,7 @@
 
 ---
 
-## Phase 5 — textil-cli: 基本コマンド実装
+## Phase 5 — textil-cli: 基本コマンド実装 ✅ 完了
 
 **目標:** `@textil/core` をラップした CLI ツールを動作させる
 
@@ -143,16 +143,18 @@
 - stdin パイプ対応
 
 ### タスク
-- [ ] CLI フレームワーク選定・セットアップ（commander.js）
-- [ ] `src/commands/text.ts` — テキスト生成コマンド
-- [ ] `src/commands/generate.ts` — 画像生成コマンド（stdin パイプ含む）
-- [ ] `src/commands/export.ts` — エクスポートコマンド（--target フラグ）
-- [ ] `src/commands/interactive.ts` — グリッドを `$EDITOR` で開く簡易編集
-- [ ] e2e テスト: 実際の CLI 呼び出しで出力を検証
-- [ ] `package.json` の `bin` フィールド設定
+- [x] CLI フレームワーク選定・セットアップ（commander.js）
+- [x] `src/commands/text.ts` — テキスト生成コマンド
+- [x] `src/commands/generate.ts` — 画像生成コマンド（stdin パイプ含む）
+- [x] `src/commands/export.ts` — エクスポートコマンド（--target フラグ）
+- [x] `src/commands/interactive.ts` — グリッドを `$EDITOR` で開く簡易編集
+- [x] e2e テスト: 実際の CLI 呼び出しで出力を検証
+- [x] `package.json` の `bin` フィールド設定
 
 ### 完了基準
 README のサンプルコマンドがすべて動作すること
+
+**実装結果:** 全 21 テスト green 確認済み（2026-06-05）
 
 ---
 
