@@ -13,7 +13,8 @@
     "lint": "biome check ."
   },
   "dependencies": {
-    "@textil/core": "workspace:*"
+    "@textil/core": "workspace:*",
+    "commander": "^12.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
