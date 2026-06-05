@@ -26,14 +26,8 @@ export function registerGenerate(program: Command): void {
           target: string;
         },
       ) => {
-        let bytes: Uint8Array;
-        if (!file || file === "-") {
-          const buf = await readStdin();
-          bytes = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
-        } else {
-          const buf = await readFile(file);
-          bytes = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
-        }
+        const buf = !file || file === "-" ? await readStdin() : await readFile(file);
+        const bytes = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
 
         const grid = await generateImage(bytes, {
           width: opts.width,

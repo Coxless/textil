@@ -107,10 +107,12 @@ function makeSolidPngBytes(width: number, height: number): Buffer {
 }
 
 let tmpPng: string;
+let solidPngBytes: Buffer;
 
 beforeAll(() => {
+  solidPngBytes = makeSolidPngBytes(16, 8);
   tmpPng = path.join(tmpdir(), `textil-test-${process.pid}.png`);
-  writeFileSync(tmpPng, makeSolidPngBytes(16, 8));
+  writeFileSync(tmpPng, solidPngBytes);
 });
 
 afterAll(() => {
@@ -129,8 +131,7 @@ describe("textil generate", () => {
   });
 
   it("generates from stdin (piped bytes)", () => {
-    const pngBytes = makeSolidPngBytes(16, 8);
-    const { stdout, exitCode } = runCli(["generate", "-", "--width", "20"], { stdin: pngBytes });
+    const { stdout, exitCode } = runCli(["generate", "-", "--width", "20"], { stdin: solidPngBytes });
     expect(exitCode).toBe(0);
     expect(stdout.trim().length).toBeGreaterThan(0);
   });

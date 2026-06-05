@@ -4,11 +4,10 @@ import { readFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import type { Command } from "commander";
-import { ExportTarget, exportGrid } from "@textil/core";
+import { ExportTarget, exportGrid, type AsciiGrid } from "@textil/core";
 import { readStdin } from "../lib/stdin.js";
 import { tryParseGrid, parseGridFromPlainText } from "../lib/grid-io.js";
 import { printResult } from "../lib/print.js";
-import type { AsciiGrid } from "@textil/core";
 
 async function resolveInputGrid(file: string | undefined): Promise<AsciiGrid> {
   if (file) {
