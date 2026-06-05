@@ -1,14 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { exportGithub } from "../../exporter/github.js";
 import type { AsciiGrid } from "../../types/grid.js";
+import { makeFilledGrid } from "./helpers.js";
 
-function makeGrid(width: number, height = 1): AsciiGrid {
-  return {
-    width,
-    height,
-    cells: Array.from({ length: height }, () => Array<string>(width).fill("x")),
-  };
-}
+const makeGrid = (width: number, height = 1) => makeFilledGrid(width, height, "x");
 
 describe("exportGithub", () => {
   it("wraps output in fenced code block", () => {

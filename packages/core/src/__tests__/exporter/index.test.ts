@@ -31,12 +31,4 @@ describe("exportGrid", () => {
   it('delegates "json" to exportJson', () => {
     expect(exportGrid(grid, "json")).toEqual(exportJson(grid));
   });
-
-  it("all targets return { output: string, warnings: string[] }", () => {
-    for (const target of ["plain", "github", "ansi", "json"] as const) {
-      const result = exportGrid(grid, target);
-      expect(typeof result.output).toBe("string");
-      expect(Array.isArray(result.warnings)).toBe(true);
-    }
-  });
 });

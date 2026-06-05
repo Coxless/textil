@@ -1,5 +1,6 @@
 import type { AsciiGrid } from "../types/grid.js";
 import type { ExportResult } from "../types/options.js";
+import { cellsToLines } from "./utils.js";
 
 export interface AsciiGridJson {
   version: 1;
@@ -13,7 +14,7 @@ export function exportJson(grid: AsciiGrid): ExportResult {
     version: 1,
     width: grid.width,
     height: grid.height,
-    rows: grid.cells.map((row) => row.join("")),
+    rows: cellsToLines(grid.cells),
   };
   return { output: JSON.stringify(payload, null, 2), warnings: [] };
 }

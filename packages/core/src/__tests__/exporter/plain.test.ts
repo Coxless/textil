@@ -1,14 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { exportPlain } from "../../exporter/plain.js";
 import type { AsciiGrid } from "../../types/grid.js";
+import { makeFilledGrid } from "./helpers.js";
 
-function makeGrid(width: number, height: number, char = " "): AsciiGrid {
-  return {
-    width,
-    height,
-    cells: Array.from({ length: height }, () => Array<string>(width).fill(char)),
-  };
-}
+const makeGrid = (width: number, height: number, char = " ") => makeFilledGrid(width, height, char);
 
 describe("exportPlain", () => {
   it("single row: joins cells without separator", () => {

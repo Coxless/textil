@@ -5,17 +5,15 @@ import { exportGithub } from "./github.js";
 import { exportJson } from "./json.js";
 import { exportPlain } from "./plain.js";
 
+const exporters: Record<ExportTarget, (grid: AsciiGrid) => ExportResult> = {
+  plain: exportPlain,
+  github: exportGithub,
+  ansi: exportAnsi,
+  json: exportJson,
+};
+
 export function exportGrid(grid: AsciiGrid, target: ExportTarget): ExportResult {
-  switch (target) {
-    case "plain":
-      return exportPlain(grid);
-    case "github":
-      return exportGithub(grid);
-    case "ansi":
-      return exportAnsi(grid);
-    case "json":
-      return exportJson(grid);
-  }
+  return exporters[target](grid);
 }
 
 export { exportPlain } from "./plain.js";

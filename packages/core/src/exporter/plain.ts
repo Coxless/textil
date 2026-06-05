@@ -1,7 +1,7 @@
 import type { AsciiGrid } from "../types/grid.js";
 import type { ExportResult } from "../types/options.js";
+import { cellsToLines } from "./utils.js";
 
 export function exportPlain(grid: AsciiGrid): ExportResult {
-  const output = grid.cells.map((row) => row.join("")).join("\n");
-  return { output, warnings: [] };
+  return { output: cellsToLines(grid.cells).join("\n"), warnings: [] };
 }

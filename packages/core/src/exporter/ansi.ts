@@ -25,7 +25,7 @@ function ansiCode(char: string): string {
   if (char === " ") return "";
   if (DENSE.has(char)) return "\x1b[1m";
   if (LIGHT.has(char)) return "\x1b[2m";
-  return "\x1b[0m";
+  return "";
 }
 
 export function exportAnsi(grid: AsciiGrid): ExportResult {

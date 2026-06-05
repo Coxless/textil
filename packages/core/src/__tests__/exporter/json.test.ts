@@ -1,15 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { exportJson } from "../../exporter/json.js";
 import type { AsciiGridJson } from "../../exporter/json.js";
-import type { AsciiGrid } from "../../types/grid.js";
-
-function makeGrid(width: number, height: number, char = "x"): AsciiGrid {
-  return {
-    width,
-    height,
-    cells: Array.from({ length: height }, () => Array<string>(width).fill(char)),
-  };
-}
+import { makeFilledGrid as makeGrid } from "./helpers.js";
 
 describe("exportJson", () => {
   it("output is valid JSON", () => {

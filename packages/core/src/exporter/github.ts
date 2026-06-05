@@ -1,5 +1,6 @@
 import type { AsciiGrid } from "../types/grid.js";
 import type { ExportResult } from "../types/options.js";
+import { cellsToLines } from "./utils.js";
 
 const WIDTH_LIMIT = 80;
 
@@ -10,7 +11,7 @@ export function exportGithub(grid: AsciiGrid): ExportResult {
       `Grid width (${grid.width}) exceeds ${WIDTH_LIMIT} columns. The output may not render correctly on GitHub.`,
     );
   }
-  const body = grid.cells.map((row) => row.join("")).join("\n");
+  const body = cellsToLines(grid.cells).join("\n");
   const output = `\`\`\`\n${body}\n\`\`\``;
   return { output, warnings };
 }
