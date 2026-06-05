@@ -108,7 +108,7 @@
 
 ---
 
-## Phase 4 — @textil/core: エクスポーター
+## Phase 4 — @textil/core: エクスポーター ✅ 完了
 
 **目標:** AsciiGrid → 各出力形式への変換ロジックを実装する
 
@@ -118,15 +118,17 @@
 - 幅制限チェック・警告機能
 
 ### タスク
-- [ ] `src/exporter/plain.ts` — プレーンテキスト出力
-- [ ] `src/exporter/github.ts` — Markdown コードブロック生成、幅80列リサイズ
-- [ ] `src/exporter/ansi.ts` — ANSIエスケープ色付き出力
-- [ ] `src/exporter/json.ts` — 構造化 JSON（行配列 + メタデータ）
-- [ ] `src/exporter/index.ts` — `export(grid, target)` ディスパッチ
-- [ ] ユニットテスト: 各フォーマットの出力文字列を検証
+- [x] `src/exporter/plain.ts` — プレーンテキスト出力
+- [x] `src/exporter/github.ts` — Markdown コードブロック生成、幅80列リサイズ
+- [x] `src/exporter/ansi.ts` — ANSIエスケープ色付き出力
+- [x] `src/exporter/json.ts` — 構造化 JSON（行配列 + メタデータ）
+- [x] `src/exporter/index.ts` — `export(grid, target)` ディスパッチ
+- [x] ユニットテスト: 各フォーマットの出力文字列を検証
 
 ### 完了基準
 全エクスポートターゲットがテストで検証済みで、`@textil/core` の公開 API が確定すること
+
+**実装結果:** 全 173 テスト green 確認済み（2026-06-05）
 
 ---
 
