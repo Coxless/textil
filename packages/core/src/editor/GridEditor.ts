@@ -144,6 +144,10 @@ export class GridEditor {
     return this.history.canRedo();
   }
 
+  clearHistory(): void {
+    this.history.clear();
+  }
+
   toGrid(): AsciiGrid {
     return {
       width: this.width,
