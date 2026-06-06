@@ -11,14 +11,14 @@ export function ImageUploader({ onImageLoad, onClear }: ImageUploaderProps) {
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [isDragActive, setIsDragActive] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const prevUrlRef = useRef<string | null>(null);
 
   const handleFile = useCallback(
     (file: File) => {
+      if (prevUrlRef.current) URL.revokeObjectURL(prevUrlRef.current);
       const url = URL.createObjectURL(file);
-      setThumbnailUrl((prev) => {
-        if (prev) URL.revokeObjectURL(prev);
-        return url;
-      });
+      prevUrlRef.current = url;
+      setThumbnailUrl(url);
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.result instanceof ArrayBuffer) {
@@ -49,11 +49,12 @@ export function ImageUploader({ onImageLoad, onClear }: ImageUploaderProps) {
   );
 
   const handleClear = useCallback(() => {
-    if (thumbnailUrl) URL.revokeObjectURL(thumbnailUrl);
+    if (prevUrlRef.current) URL.revokeObjectURL(prevUrlRef.current);
+    prevUrlRef.current = null;
     setThumbnailUrl(null);
     if (inputRef.current) inputRef.current.value = "";
     onClear();
-  }, [thumbnailUrl, onClear]);
+  }, [onClear]);
 
   return (
     <div className="flex flex-col gap-1.5">

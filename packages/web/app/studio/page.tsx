@@ -28,8 +28,7 @@ export default function StudioPage() {
   const textResult = useGenerator(text, font, width);
   const imageResult = useImageGenerator(imageData, charset, contrast, threshold, imageWidth);
 
-  const { grid, error } = mode === "text" ? textResult : imageResult;
-  const isLoading = mode === "image" ? imageResult.isLoading : false;
+  const { grid, error, isLoading } = mode === "text" ? textResult : imageResult;
 
   return (
     <div className="flex h-screen overflow-hidden bg-zinc-900">

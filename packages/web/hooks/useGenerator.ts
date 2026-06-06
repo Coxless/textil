@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 interface GeneratorResult {
   grid: AsciiGrid | null;
   error: string | null;
+  isLoading: boolean;
 }
 
 export function useGenerator(
@@ -16,22 +17,24 @@ export function useGenerator(
   const [result, setResult] = useState<GeneratorResult>({
     grid: null,
     error: null,
+    isLoading: false,
   });
 
   useEffect(() => {
     if (!text.trim()) {
-      setResult({ grid: null, error: null });
+      setResult({ grid: null, error: null, isLoading: false });
       return;
     }
 
     const id = setTimeout(() => {
       try {
         const grid = generateText(text, { font, width });
-        setResult({ grid, error: null });
+        setResult({ grid, error: null, isLoading: false });
       } catch (err) {
         setResult({
           grid: null,
           error: err instanceof Error ? err.message : String(err),
+          isLoading: false,
         });
       }
     }, 150);
