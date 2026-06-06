@@ -21,10 +21,7 @@ export interface UseGridEditorResult {
 }
 
 function seedEditor(grid: AsciiGrid): GridEditor {
-  const editor = new GridEditor(grid.width, grid.height);
-  editor.setRegion({ row: 0, col: 0, width: grid.width, height: grid.height }, grid.cells);
-  editor.clearHistory();
-  return editor;
+  return new GridEditor(grid.width, grid.height, grid.cells);
 }
 
 export function useGridEditor(initialGrid: AsciiGrid): UseGridEditorResult {

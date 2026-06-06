@@ -36,10 +36,10 @@ export class GridEditor {
   readonly width: number;
   readonly height: number;
 
-  constructor(width: number, height: number, initialChar: Cell = " ") {
+  constructor(width: number, height: number, initial: Cell | Cell[][] = " ") {
     this.width = width;
     this.height = height;
-    this.cells = makeGrid(width, height, initialChar);
+    this.cells = Array.isArray(initial) ? cloneCells(initial) : makeGrid(width, height, initial);
   }
 
   getCell(row: number, col: number): Cell {

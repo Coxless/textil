@@ -1,15 +1,7 @@
 "use client";
 
 import type { AsciiGrid, Cell, Rect } from "@textil/core";
-
-function cellInRect(row: number, col: number, rect: Rect): boolean {
-  return (
-    row >= rect.row &&
-    row < rect.row + rect.height &&
-    col >= rect.col &&
-    col < rect.col + rect.width
-  );
-}
+import { cellInRect } from "./rect";
 
 interface GridCanvasProps {
   grid: AsciiGrid;
