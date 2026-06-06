@@ -3,6 +3,8 @@ import type { AsciiGrid } from "@textil/core";
 interface PreviewProps {
   grid: AsciiGrid | null;
   error: string | null;
+  isLoading?: boolean;
+  placeholder?: string;
 }
 
 function CenteredMessage({ text, className }: { text: string; className: string }) {
@@ -13,13 +15,17 @@ function CenteredMessage({ text, className }: { text: string; className: string 
   );
 }
 
-export function Preview({ grid, error }: PreviewProps) {
+export function Preview({
+  grid,
+  error,
+  isLoading,
+  placeholder = "Type something to generate ASCII art",
+}: PreviewProps) {
   if (error) return <CenteredMessage text={error} className="text-red-400" />;
 
-  if (!grid)
-    return (
-      <CenteredMessage text="Type something to generate ASCII art" className="text-zinc-600" />
-    );
+  if (!grid && isLoading) return <CenteredMessage text="Generating…" className="text-zinc-500" />;
+
+  if (!grid) return <CenteredMessage text={placeholder} className="text-zinc-600" />;
 
   const output = grid.cells.map((row) => row.join("")).join("\n");
 
