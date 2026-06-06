@@ -1,6 +1,7 @@
 "use client";
 
 import { GridEditorPanel } from "@/components/editor/GridEditorPanel";
+import { ExportModal } from "@/components/export/ExportModal";
 import { CharsetSelector } from "@/components/studio/CharsetSelector";
 import { FontPicker } from "@/components/studio/FontPicker";
 import { ImageControls } from "@/components/studio/ImageControls";
@@ -27,6 +28,7 @@ export default function StudioPage() {
   const [imageWidth, setImageWidth] = useState(80);
 
   const [editMode, setEditMode] = useState(false);
+  const [showExport, setShowExport] = useState(false);
 
   const textResult = useGenerator(text, font, width);
   const imageResult = useImageGenerator(imageData, charset, contrast, threshold, imageWidth);
@@ -84,13 +86,22 @@ export default function StudioPage() {
         )}
 
         {grid && !editMode && (
-          <button
-            type="button"
-            onClick={() => setEditMode(true)}
-            className="mt-auto w-full rounded-md border border-zinc-700 bg-zinc-800 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:bg-zinc-700 hover:text-zinc-100"
-          >
-            Edit grid
-          </button>
+          <div className="mt-auto flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={() => setEditMode(true)}
+              className="w-full rounded-md border border-zinc-700 bg-zinc-800 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:bg-zinc-700 hover:text-zinc-100"
+            >
+              Edit grid
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowExport(true)}
+              className="w-full rounded-md border border-zinc-700 bg-zinc-800 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:bg-zinc-700 hover:text-zinc-100"
+            >
+              Export
+            </button>
+          </div>
         )}
       </aside>
 
@@ -110,6 +121,8 @@ export default function StudioPage() {
           />
         )}
       </main>
+
+      {showExport && grid && <ExportModal grid={grid} onClose={() => setShowExport(false)} />}
     </div>
   );
 }
