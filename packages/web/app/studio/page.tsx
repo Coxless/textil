@@ -1,5 +1,6 @@
 "use client";
 
+import { GridEditorPanel } from "@/components/editor/GridEditorPanel";
 import { CharsetSelector } from "@/components/studio/CharsetSelector";
 import { FontPicker } from "@/components/studio/FontPicker";
 import { ImageControls } from "@/components/studio/ImageControls";
@@ -7,7 +8,6 @@ import { ImageUploader } from "@/components/studio/ImageUploader";
 import { Preview } from "@/components/studio/Preview";
 import { TextInput } from "@/components/studio/TextInput";
 import { WidthSlider } from "@/components/studio/WidthSlider";
-import { GridEditorPanel } from "@/components/editor/GridEditorPanel";
 import { useGenerator } from "@/hooks/useGenerator";
 import { useImageGenerator } from "@/hooks/useImageGenerator";
 import { type AvailableFontName, DEFAULT_FONT } from "@textil/core";
@@ -33,6 +33,7 @@ export default function StudioPage() {
 
   const { grid, error, isLoading } = mode === "text" ? textResult : imageResult;
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: grid is the change trigger, not read inside
   useEffect(() => {
     setEditMode(false);
   }, [grid]);

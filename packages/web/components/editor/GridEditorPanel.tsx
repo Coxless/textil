@@ -1,14 +1,14 @@
 "use client";
 
+import { useGridEditor } from "@/hooks/useGridEditor";
 import type { AsciiGrid, Cell, Rect } from "@textil/core";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useGridEditor } from "@/hooks/useGridEditor";
 import { FindReplacePanel } from "./FindReplacePanel";
 import { GridCanvas } from "./GridCanvas";
-import { cellInRect, normalizeRect } from "./rect";
 import type { EditorTool } from "./Toolbar";
 import { Toolbar } from "./Toolbar";
 import { ZoomControl } from "./ZoomControl";
+import { cellInRect, normalizeRect } from "./rect";
 
 interface GridEditorPanelProps {
   initialGrid: AsciiGrid;
@@ -16,8 +16,18 @@ interface GridEditorPanelProps {
 }
 
 export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProps) {
-  const { grid, setRegion, textInsert, moveRegion, deleteRegion, findReplace, undo, redo, canUndo, canRedo } =
-    useGridEditor(initialGrid);
+  const {
+    grid,
+    setRegion,
+    textInsert,
+    moveRegion,
+    deleteRegion,
+    findReplace,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+  } = useGridEditor(initialGrid);
 
   const [tool, setTool] = useState<EditorTool>("pencil");
   const [zoom, setZoom] = useState(100);
@@ -47,7 +57,7 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
   const gridRef = useRef(grid);
   gridRef.current = grid;
 
-  const bumpPaint = () => setPaintVersion((v) => v + 1);
+  const bumpPaint = useCallback(() => setPaintVersion((v) => v + 1), []);
 
   const changeTool = useCallback((t: EditorTool) => {
     setTool(t);
@@ -82,17 +92,34 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
       const inTextMode = currentTool === "text" && currentCursor !== null;
 
       if (!inTextMode) {
-        if (e.key === "p") { changeTool("pencil"); return; }
-        if (e.key === "e") { changeTool("eraser"); return; }
-        if (e.key === "s") { changeTool("select"); return; }
-        if (e.key === "t") { setTool("text"); return; }
+        if (e.key === "p") {
+          changeTool("pencil");
+          return;
+        }
+        if (e.key === "e") {
+          changeTool("eraser");
+          return;
+        }
+        if (e.key === "s") {
+          changeTool("select");
+          return;
+        }
+        if (e.key === "t") {
+          setTool("text");
+          return;
+        }
       }
 
       if (inTextMode) {
-        if (e.key === "Escape") { setCursor(null); return; }
+        if (e.key === "Escape") {
+          setCursor(null);
+          return;
+        }
         if (e.key === "ArrowRight") {
           e.preventDefault();
-          setCursor((c) => c && { row: c.row, col: Math.min(c.col + 1, gridRef.current.width - 1) });
+          setCursor(
+            (c) => c && { row: c.row, col: Math.min(c.col + 1, gridRef.current.width - 1) },
+          );
           return;
         }
         if (e.key === "ArrowLeft") {
@@ -102,7 +129,9 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         }
         if (e.key === "ArrowDown") {
           e.preventDefault();
-          setCursor((c) => c && { row: Math.min(c.row + 1, gridRef.current.height - 1), col: c.col });
+          setCursor(
+            (c) => c && { row: Math.min(c.row + 1, gridRef.current.height - 1), col: c.col },
+          );
           return;
         }
         if (e.key === "ArrowUp") {
@@ -116,7 +145,9 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         }
         if (e.key === "Tab") {
           e.preventDefault();
-          setCursor((c) => c && { row: c.row, col: Math.min(c.col + 4, gridRef.current.width - 1) });
+          setCursor(
+            (c) => c && { row: c.row, col: Math.min(c.col + 4, gridRef.current.width - 1) },
+          );
           return;
         }
         if (e.key === "Backspace") {
@@ -129,7 +160,9 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
           e.preventDefault();
           textInsert(currentCursor.row, currentCursor.col, e.key);
-          setCursor((c) => c && { row: c.row, col: Math.min(c.col + 1, gridRef.current.width - 1) });
+          setCursor(
+            (c) => c && { row: c.row, col: Math.min(c.col + 1, gridRef.current.width - 1) },
+          );
           return;
         }
       }
@@ -171,7 +204,7 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         setCursor({ row, col });
       }
     },
-    [tool, penChar, selection],
+    [tool, penChar, selection, bumpPaint],
   );
 
   const handlePointerEnter = useCallback(
@@ -188,13 +221,20 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
           const dc = col - moveStartRef.current.col;
           const newRow = Math.max(0, Math.min(selection.row + dr, grid.height - selection.height));
           const newCol = Math.max(0, Math.min(selection.col + dc, grid.width - selection.width));
-          setMovePreviewRect({ row: newRow, col: newCol, width: selection.width, height: selection.height });
+          setMovePreviewRect({
+            row: newRow,
+            col: newCol,
+            width: selection.width,
+            height: selection.height,
+          });
         } else if (selectionStartRef.current !== null) {
-          setSelectionInProgress(normalizeRect(selectionStartRef.current.row, selectionStartRef.current.col, row, col));
+          setSelectionInProgress(
+            normalizeRect(selectionStartRef.current.row, selectionStartRef.current.col, row, col),
+          );
         }
       }
     },
-    [tool, penChar, selection, grid.height, grid.width],
+    [tool, penChar, selection, grid.height, grid.width, bumpPaint],
   );
 
   const handlePointerUp = useCallback(() => {
@@ -205,7 +245,10 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
       const batch = pendingPaintMapRef.current;
       if (batch.size === 0) return;
 
-      let minRow = Infinity, minCol = Infinity, maxRow = -Infinity, maxCol = -Infinity;
+      let minRow = Number.POSITIVE_INFINITY;
+      let minCol = Number.POSITIVE_INFINITY;
+      let maxRow = Number.NEGATIVE_INFINITY;
+      let maxCol = Number.NEGATIVE_INFINITY;
       for (const key of batch.keys()) {
         const [r, c] = key.split(",").map(Number);
         if (r < minRow) minRow = r;
@@ -214,7 +257,12 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         if (c > maxCol) maxCol = c;
       }
 
-      const rect: Rect = { row: minRow, col: minCol, height: maxRow - minRow + 1, width: maxCol - minCol + 1 };
+      const rect: Rect = {
+        row: minRow,
+        col: minCol,
+        height: maxRow - minRow + 1,
+        width: maxCol - minCol + 1,
+      };
       const regionCells: Cell[][] = [];
       for (let r = minRow; r <= maxRow; r++) {
         const row: Cell[] = [];
@@ -247,7 +295,7 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         setSelectionInProgress(null);
       }
     }
-  }, [tool, grid, setRegion, moveRegion, selection, selectionInProgress]);
+  }, [tool, grid, setRegion, moveRegion, selection, selectionInProgress, bumpPaint]);
 
   // During a move drag: hide original selection, show preview rect as selection-in-progress
   const displaySelection = isMoveRef.current ? null : selection;
@@ -272,10 +320,7 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         onPenCharChange={setPenChar}
       />
       {findReplaceOpen && (
-        <FindReplacePanel
-          onFindReplace={findReplace}
-          onClose={() => setFindReplaceOpen(false)}
-        />
+        <FindReplacePanel onFindReplace={findReplace} onClose={() => setFindReplaceOpen(false)} />
       )}
       <div className="flex flex-1 overflow-hidden">
         <div className="flex-1 overflow-hidden">

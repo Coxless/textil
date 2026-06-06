@@ -51,8 +51,7 @@ export function Toolbar({
                 : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-300"
             }`}
           >
-            {label}{" "}
-            <kbd className="font-mono text-zinc-500">{shortcut}</kbd>
+            {label} <kbd className="font-mono text-zinc-500">{shortcut}</kbd>
           </button>
         ))}
       </div>

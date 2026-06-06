@@ -45,8 +45,7 @@ export function GridCanvas({
             const key = `${r},${c}`;
             const char = pendingPaint.get(key) ?? cell;
             const isCursor = cursor?.row === r && cursor?.col === c;
-            const isSelected =
-              !isCursor && selection !== null && cellInRect(r, c, selection);
+            const isSelected = !isCursor && selection !== null && cellInRect(r, c, selection);
             const isInProgress =
               !isCursor && selectionInProgress !== null && cellInRect(r, c, selectionInProgress);
 

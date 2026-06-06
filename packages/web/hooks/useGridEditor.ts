@@ -25,16 +25,15 @@ function seedEditor(grid: AsciiGrid): GridEditor {
 }
 
 export function useGridEditor(initialGrid: AsciiGrid): UseGridEditorResult {
-  const editorRef = useRef<GridEditor | null>(null);
-  if (editorRef.current === null) {
-    editorRef.current = seedEditor(initialGrid);
-  }
+  // useRef's initial value is only used on first render; subsequent renders discard it.
+  // Typed as GridEditor (non-nullable) so callbacks need no null checks or assertions.
+  const editorRef = useRef(seedEditor(initialGrid));
   const [, setVersion] = useState(0);
   const bumpVersion = useCallback(() => setVersion((v) => v + 1), []);
 
   const setRegion = useCallback(
     (rect: Rect, cells: Cell[][]) => {
-      editorRef.current!.setRegion(rect, cells);
+      editorRef.current.setRegion(rect, cells);
       bumpVersion();
     },
     [bumpVersion],
@@ -42,7 +41,7 @@ export function useGridEditor(initialGrid: AsciiGrid): UseGridEditorResult {
 
   const fill = useCallback(
     (rect: Rect, char: Cell) => {
-      editorRef.current!.fill(rect, char);
+      editorRef.current.fill(rect, char);
       bumpVersion();
     },
     [bumpVersion],
@@ -50,7 +49,7 @@ export function useGridEditor(initialGrid: AsciiGrid): UseGridEditorResult {
 
   const textInsert = useCallback(
     (row: number, col: number, text: string) => {
-      editorRef.current!.textInsert(row, col, text);
+      editorRef.current.textInsert(row, col, text);
       bumpVersion();
     },
     [bumpVersion],
@@ -58,7 +57,7 @@ export function useGridEditor(initialGrid: AsciiGrid): UseGridEditorResult {
 
   const copyRegion = useCallback(
     (srcRect: Rect, dstRow: number, dstCol: number) => {
-      editorRef.current!.copyRegion(srcRect, dstRow, dstCol);
+      editorRef.current.copyRegion(srcRect, dstRow, dstCol);
       bumpVersion();
     },
     [bumpVersion],
@@ -66,7 +65,7 @@ export function useGridEditor(initialGrid: AsciiGrid): UseGridEditorResult {
 
   const moveRegion = useCallback(
     (srcRect: Rect, dstRow: number, dstCol: number) => {
-      editorRef.current!.moveRegion(srcRect, dstRow, dstCol);
+      editorRef.current.moveRegion(srcRect, dstRow, dstCol);
       bumpVersion();
     },
     [bumpVersion],
@@ -74,7 +73,7 @@ export function useGridEditor(initialGrid: AsciiGrid): UseGridEditorResult {
 
   const deleteRegion = useCallback(
     (rect: Rect) => {
-      editorRef.current!.fill(rect, " ");
+      editorRef.current.fill(rect, " ");
       bumpVersion();
     },
     [bumpVersion],
@@ -82,7 +81,7 @@ export function useGridEditor(initialGrid: AsciiGrid): UseGridEditorResult {
 
   const findReplace = useCallback(
     (find: string, replace: string): number => {
-      const count = editorRef.current!.findReplace(find, replace);
+      const count = editorRef.current.findReplace(find, replace);
       if (count > 0) bumpVersion();
       return count;
     },
@@ -90,12 +89,12 @@ export function useGridEditor(initialGrid: AsciiGrid): UseGridEditorResult {
   );
 
   const undo = useCallback(() => {
-    editorRef.current!.undo();
+    editorRef.current.undo();
     bumpVersion();
   }, [bumpVersion]);
 
   const redo = useCallback(() => {
-    editorRef.current!.redo();
+    editorRef.current.redo();
     bumpVersion();
   }, [bumpVersion]);
 
@@ -107,8 +106,7 @@ export function useGridEditor(initialGrid: AsciiGrid): UseGridEditorResult {
     [bumpVersion],
   );
 
-  // editorRef.current is always non-null after lazy init above
-  const editor = editorRef.current!;
+  const editor = editorRef.current;
   return {
     grid: editor.toGrid(),
     setRegion,

@@ -23,6 +23,6 @@
     }
   },
   "files": {
-    "ignore": ["node_modules", "dist", ".next", ".turbo", "*.tsbuildinfo"]
+    "ignore": ["node_modules", "dist", ".next", ".turbo", "*.tsbuildinfo", "**/.claude"]
   }
 }

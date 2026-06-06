@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
 import type { AsciiGrid } from "@textil/core";
+import { describe, expect, it } from "vitest";
 import { useGridEditor } from "./useGridEditor";
 
 function makeGrid(width: number, height: number, char = " "): AsciiGrid {
@@ -65,8 +65,12 @@ describe("useGridEditor", () => {
     act(() => {
       result.current.setRegion({ row: 0, col: 0, width: 1, height: 1 }, [["X"]]);
     });
-    act(() => { result.current.undo(); });
-    act(() => { result.current.redo(); });
+    act(() => {
+      result.current.undo();
+    });
+    act(() => {
+      result.current.redo();
+    });
     expect(result.current.grid.cells[0][0]).toBe("X");
     expect(result.current.canUndo).toBe(true);
     expect(result.current.canRedo).toBe(false);
