@@ -48,16 +48,16 @@ export default function StudioPage() {
           <span className="text-xs text-zinc-600">studio</span>
         </div>
 
-        <div className="flex overflow-hidden rounded-md border border-zinc-700">
+        <div className="flex rounded-md border border-zinc-700">
           {(["text", "image"] as const).map((m) => (
             <button
               key={m}
               type="button"
               onClick={() => setMode(m)}
-              className={`flex-1 py-1.5 text-xs font-medium capitalize transition-colors ${
+              className={`flex-1 py-1.5 text-xs font-medium capitalize transition-colors first:rounded-l-md last:rounded-r-md ${
                 m === mode
                   ? "bg-zinc-700 text-zinc-100"
-                  : "bg-zinc-800 text-zinc-400 hover:bg-zinc-750 hover:text-zinc-300"
+                  : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-300"
               }`}
             >
               {m}
