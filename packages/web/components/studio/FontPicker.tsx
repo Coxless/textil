@@ -1,25 +1,20 @@
 "use client";
 
 import { AVAILABLE_FONTS, type AvailableFontName, generateText } from "@textil/core";
-import { useMemo } from "react";
 
 interface FontPickerProps {
   value: AvailableFontName;
   onChange: (font: AvailableFontName) => void;
 }
 
-export function FontPicker({ value, onChange }: FontPickerProps) {
-  const thumbnails = useMemo(
-    () =>
-      Object.fromEntries(
-        AVAILABLE_FONTS.map((font) => {
-          const grid = generateText("Ag", { font, width: 20 });
-          return [font, grid.cells.map((row) => row.join("")).join("\n")];
-        }),
-      ) as Record<AvailableFontName, string>,
-    [],
-  );
+const THUMBNAILS = Object.fromEntries(
+  AVAILABLE_FONTS.map((font) => {
+    const grid = generateText("Ag", { font, width: 20 });
+    return [font, grid.cells.map((row) => row.join("")).join("\n")];
+  }),
+) as Record<AvailableFontName, string>;
 
+export function FontPicker({ value, onChange }: FontPickerProps) {
   return (
     <div className="flex flex-col gap-1.5">
       <p className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Font</p>
@@ -38,7 +33,7 @@ export function FontPicker({ value, onChange }: FontPickerProps) {
             <span className="text-[10px] font-medium text-zinc-400">{font}</span>
             <div className="overflow-hidden">
               <pre className="origin-top-left scale-[0.35] font-mono text-[10px] leading-tight text-zinc-300 whitespace-pre">
-                {thumbnails[font]}
+                {THUMBNAILS[font]}
               </pre>
             </div>
           </button>

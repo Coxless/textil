@@ -5,22 +5,21 @@ interface PreviewProps {
   error: string | null;
 }
 
-export function Preview({ grid, error }: PreviewProps) {
-  if (error) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <p className="font-mono text-sm text-red-400">{error}</p>
-      </div>
-    );
-  }
+function CenteredMessage({ text, className }: { text: string; className: string }) {
+  return (
+    <div className="flex h-full items-center justify-center">
+      <p className={`font-mono text-sm ${className}`}>{text}</p>
+    </div>
+  );
+}
 
-  if (!grid) {
+export function Preview({ grid, error }: PreviewProps) {
+  if (error) return <CenteredMessage text={error} className="text-red-400" />;
+
+  if (!grid)
     return (
-      <div className="flex h-full items-center justify-center">
-        <p className="font-mono text-sm text-zinc-600">Type something to generate ASCII art</p>
-      </div>
+      <CenteredMessage text="Type something to generate ASCII art" className="text-zinc-600" />
     );
-  }
 
   const output = grid.cells.map((row) => row.join("")).join("\n");
 

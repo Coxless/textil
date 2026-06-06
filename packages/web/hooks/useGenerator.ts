@@ -1,7 +1,7 @@
 "use client";
 
 import { type AsciiGrid, type AvailableFontName, generateText } from "@textil/core";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface GeneratorResult {
   grid: AsciiGrid | null;
@@ -18,18 +18,13 @@ export function useGenerator(
     error: null,
   });
 
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Font and width changes are immediate; text is debounced 150 ms.
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-
     if (!text.trim()) {
       setResult({ grid: null, error: null });
       return;
     }
 
-    debounceRef.current = setTimeout(() => {
+    const id = setTimeout(() => {
       try {
         const grid = generateText(text, { font, width });
         setResult({ grid, error: null });
@@ -41,9 +36,7 @@ export function useGenerator(
       }
     }, 150);
 
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-    };
+    return () => clearTimeout(id);
   }, [text, font, width]);
 
   return result;

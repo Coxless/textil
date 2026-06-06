@@ -1,5 +1,8 @@
 "use client";
 
+const MIN = 40;
+const MAX = 160;
+
 interface WidthSliderProps {
   value: number;
   onChange: (value: number) => void;
@@ -20,16 +23,16 @@ export function WidthSlider({ value, onChange }: WidthSliderProps) {
       <input
         id="studio-width-slider"
         type="range"
-        min={40}
-        max={160}
+        min={MIN}
+        max={MAX}
         step={4}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full accent-zinc-400"
       />
       <div className="flex justify-between text-xs text-zinc-600">
-        <span>40</span>
-        <span>160</span>
+        <span>{MIN}</span>
+        <span>{MAX}</span>
       </div>
     </div>
   );
