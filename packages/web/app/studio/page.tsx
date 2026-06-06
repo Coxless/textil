@@ -1,5 +1,6 @@
 "use client";
 
+import { GridEditorPanel } from "@/components/editor/GridEditorPanel";
 import { CharsetSelector } from "@/components/studio/CharsetSelector";
 import { FontPicker } from "@/components/studio/FontPicker";
 import { ImageControls } from "@/components/studio/ImageControls";
@@ -10,7 +11,7 @@ import { WidthSlider } from "@/components/studio/WidthSlider";
 import { useGenerator } from "@/hooks/useGenerator";
 import { useImageGenerator } from "@/hooks/useImageGenerator";
 import { type AvailableFontName, DEFAULT_FONT } from "@textil/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function StudioPage() {
   const [mode, setMode] = useState<"text" | "image">("text");
@@ -25,10 +26,17 @@ export default function StudioPage() {
   const [threshold, setThreshold] = useState(0.5);
   const [imageWidth, setImageWidth] = useState(80);
 
+  const [editMode, setEditMode] = useState(false);
+
   const textResult = useGenerator(text, font, width);
   const imageResult = useImageGenerator(imageData, charset, contrast, threshold, imageWidth);
 
   const { grid, error, isLoading } = mode === "text" ? textResult : imageResult;
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: grid is the change trigger, not read inside
+  useEffect(() => {
+    setEditMode(false);
+  }, [grid]);
 
   return (
     <div className="flex h-screen overflow-hidden bg-zinc-900">
@@ -74,19 +82,33 @@ export default function StudioPage() {
             />
           </>
         )}
+
+        {grid && !editMode && (
+          <button
+            type="button"
+            onClick={() => setEditMode(true)}
+            className="mt-auto w-full rounded-md border border-zinc-700 bg-zinc-800 py-1.5 text-xs font-medium text-zinc-400 transition-colors hover:bg-zinc-700 hover:text-zinc-100"
+          >
+            Edit grid
+          </button>
+        )}
       </aside>
 
       <main className="flex-1 overflow-hidden bg-zinc-950">
-        <Preview
-          grid={grid}
-          error={error}
-          isLoading={isLoading}
-          placeholder={
-            mode === "text"
-              ? "Type something to generate ASCII art"
-              : "Drop an image to generate ASCII art"
-          }
-        />
+        {editMode && grid ? (
+          <GridEditorPanel initialGrid={grid} onExitEdit={() => setEditMode(false)} />
+        ) : (
+          <Preview
+            grid={grid}
+            error={error}
+            isLoading={isLoading}
+            placeholder={
+              mode === "text"
+                ? "Type something to generate ASCII art"
+                : "Drop an image to generate ASCII art"
+            }
+          />
+        )}
       </main>
     </div>
   );
