@@ -1,5 +1,7 @@
 "use client";
 
+import type { RGBColor } from "@textil/core";
+
 export type EditorTool = "pencil" | "eraser" | "select" | "text";
 
 const TOOLS: { id: EditorTool; label: string; shortcut: string }[] = [
@@ -8,6 +10,15 @@ const TOOLS: { id: EditorTool; label: string; shortcut: string }[] = [
   { id: "select", label: "Select", shortcut: "S" },
   { id: "text", label: "Text", shortcut: "T" },
 ];
+
+function rgbToHex([r, g, b]: RGBColor): string {
+  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+}
+
+function hexToRgb(hex: string): RGBColor {
+  const n = Number.parseInt(hex.slice(1), 16);
+  return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
+}
 
 interface ToolbarProps {
   tool: EditorTool;
@@ -21,6 +32,8 @@ interface ToolbarProps {
   onToggleFindReplace: () => void;
   penChar: string;
   onPenCharChange: (char: string) => void;
+  penColor: RGBColor | undefined;
+  onPenColorChange: (color: RGBColor | undefined) => void;
 }
 
 export function Toolbar({
@@ -35,7 +48,11 @@ export function Toolbar({
   onToggleFindReplace,
   penChar,
   onPenCharChange,
+  penColor,
+  onPenColorChange,
 }: ToolbarProps) {
+  const colorHex = penColor ? rgbToHex(penColor) : "#d4d4d8";
+
   return (
     <div className="flex shrink-0 items-center gap-3 border-b border-zinc-800 bg-zinc-900 px-4 py-2">
       <div className="flex overflow-hidden rounded-md border border-zinc-700">
@@ -72,6 +89,27 @@ export function Toolbar({
             }}
             className="w-8 rounded border border-zinc-700 bg-zinc-800 px-1.5 py-1 text-center font-mono text-sm text-zinc-100"
           />
+        </div>
+      )}
+
+      {(tool === "pencil" || tool === "text") && (
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs text-zinc-500">color</span>
+          <input
+            type="color"
+            value={colorHex}
+            onChange={(e) => onPenColorChange(hexToRgb(e.target.value))}
+            className="h-6 w-8 cursor-pointer rounded border border-zinc-700 bg-zinc-800 p-0.5"
+          />
+          {penColor && (
+            <button
+              type="button"
+              onClick={() => onPenColorChange(undefined)}
+              className="text-xs text-zinc-500 hover:text-zinc-300"
+            >
+              ×
+            </button>
+          )}
         </div>
       )}
 

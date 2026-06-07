@@ -13,7 +13,7 @@ import { TextInput } from "@/components/studio/TextInput";
 import { WidthSlider } from "@/components/studio/WidthSlider";
 import { useGenerator } from "@/hooks/useGenerator";
 import { useImageGenerator } from "@/hooks/useImageGenerator";
-import { type AvailableFontName, DEFAULT_FONT, type RGBColor } from "@textil/core";
+import { type AsciiGrid, type AvailableFontName, DEFAULT_FONT, type RGBColor } from "@textil/core";
 import { useEffect, useState } from "react";
 
 function Divider() {
@@ -36,6 +36,7 @@ export default function StudioPage() {
   const [colorMode, setColorMode] = useState<"color" | "mono">("mono");
 
   const [editMode, setEditMode] = useState(false);
+  const [editedGrid, setEditedGrid] = useState<AsciiGrid | null>(null);
   const [showExport, setShowExport] = useState(false);
 
   const textResult = useGenerator(text, font, width, textColor);
@@ -53,7 +54,10 @@ export default function StudioPage() {
   // biome-ignore lint/correctness/useExhaustiveDependencies: grid is the change trigger, not read inside
   useEffect(() => {
     setEditMode(false);
+    setEditedGrid(null);
   }, [grid]);
+
+  const displayGrid = editedGrid ?? grid;
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -123,7 +127,7 @@ export default function StudioPage() {
           )}
 
           {/* Action buttons */}
-          {grid && !editMode && (
+          {displayGrid && !editMode && (
             <div className="mt-auto flex flex-col gap-2 pt-4">
               <Divider />
               <div className="flex flex-col gap-2 pt-2">
@@ -159,11 +163,14 @@ export default function StudioPage() {
 
       {/* Main */}
       <main className="flex-1 overflow-hidden dot-grid">
-        {editMode && grid ? (
-          <GridEditorPanel initialGrid={grid} onExitEdit={() => setEditMode(false)} />
+        {editMode && displayGrid ? (
+          <GridEditorPanel
+            initialGrid={displayGrid}
+            onExitEdit={(g) => { setEditedGrid(g); setEditMode(false); }}
+          />
         ) : (
           <Preview
-            grid={grid}
+            grid={displayGrid}
             error={error}
             isLoading={isLoading}
             width={mode === "text" ? width : imageWidth}
@@ -176,7 +183,7 @@ export default function StudioPage() {
         )}
       </main>
 
-      {showExport && grid && <ExportModal grid={grid} onClose={() => setShowExport(false)} />}
+      {showExport && displayGrid && <ExportModal grid={displayGrid} onClose={() => setShowExport(false)} />}
     </div>
   );
 }

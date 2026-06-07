@@ -1,7 +1,7 @@
 "use client";
 
 import { useGridEditor } from "@/hooks/useGridEditor";
-import type { AsciiGrid, Cell, Rect } from "@textil/core";
+import type { AsciiGrid, Cell, Rect, RGBColor } from "@textil/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FindReplacePanel } from "./FindReplacePanel";
 import { GridCanvas } from "./GridCanvas";
@@ -12,7 +12,7 @@ import { cellInRect, normalizeRect } from "./rect";
 
 interface GridEditorPanelProps {
   initialGrid: AsciiGrid;
-  onExitEdit: () => void;
+  onExitEdit: (editedGrid: AsciiGrid) => void;
 }
 
 export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProps) {
@@ -32,6 +32,7 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
   const [tool, setTool] = useState<EditorTool>("pencil");
   const [zoom, setZoom] = useState(100);
   const [penChar, setPenChar] = useState("*");
+  const [penColor, setPenColor] = useState<RGBColor | undefined>(undefined);
   const [findReplaceOpen, setFindReplaceOpen] = useState(false);
   const [cursor, setCursor] = useState<{ row: number; col: number } | null>(null);
   const [selection, setSelection] = useState<Rect | null>(null);
@@ -56,6 +57,8 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
   selectionRef.current = selection;
   const gridRef = useRef(grid);
   gridRef.current = grid;
+  const penColorRef = useRef(penColor);
+  penColorRef.current = penColor;
 
   const bumpPaint = useCallback(() => setPaintVersion((v) => v + 1), []);
 
@@ -161,7 +164,10 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         }
         if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
           e.preventDefault();
-          textInsert(currentCursor.row, currentCursor.col, e.key);
+          setRegion(
+            { row: currentCursor.row, col: currentCursor.col, width: 1, height: 1 },
+            [[{ char: e.key, fg: penColorRef.current }]],
+          );
           setCursor(
             (c) => c && { row: c.row, col: Math.min(c.col + 1, gridRef.current.width - 1) },
           );
@@ -190,7 +196,7 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         pendingPaintMapRef.current.clear();
         pendingPaintMapRef.current.set(
           `${row},${col}`,
-          tool === "pencil" ? { char: penChar } : { char: " " },
+          tool === "pencil" ? { char: penChar, fg: penColor } : { char: " " },
         );
         bumpPaint();
       } else if (tool === "select") {
@@ -209,7 +215,7 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         setCursor({ row, col });
       }
     },
-    [tool, penChar, selection, bumpPaint],
+    [tool, penChar, penColor, selection, bumpPaint],
   );
 
   const handlePointerEnter = useCallback(
@@ -220,7 +226,7 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         if (!isPaintingRef.current) return;
         pendingPaintMapRef.current.set(
           `${row},${col}`,
-          tool === "pencil" ? { char: penChar } : { char: " " },
+          tool === "pencil" ? { char: penChar, fg: penColor } : { char: " " },
         );
         bumpPaint();
       } else if (tool === "select") {
@@ -242,7 +248,7 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         }
       }
     },
-    [tool, penChar, selection, grid.height, grid.width, bumpPaint],
+    [tool, penChar, penColor, selection, grid.height, grid.width, bumpPaint],
   );
 
   const handlePointerUp = useCallback(() => {
@@ -321,11 +327,13 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         canRedo={canRedo}
         onUndo={undo}
         onRedo={redo}
-        onExitEdit={onExitEdit}
+        onExitEdit={() => onExitEdit(grid)}
         findReplaceOpen={findReplaceOpen}
         onToggleFindReplace={() => setFindReplaceOpen((o) => !o)}
         penChar={penChar}
         onPenCharChange={setPenChar}
+        penColor={penColor}
+        onPenColorChange={setPenColor}
       />
       {findReplaceOpen && (
         <FindReplacePanel onFindReplace={findReplace} onClose={() => setFindReplaceOpen(false)} />
