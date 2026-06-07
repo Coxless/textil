@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
 *,
 *::before,
 *::after {
@@ -11,6 +15,33 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #09090b;
+  font-family: var(--font-sans);
+  background-color: #030711;
   color: #e4e4e7;
+}
+
+/* Dot-grid background for main preview area */
+.dot-grid {
+  background-color: #030711;
+  background-image: radial-gradient(rgba(148, 163, 184, 0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Thin scrollbar */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #27272a transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #27272a;
+  border-radius: 2px;
 }
