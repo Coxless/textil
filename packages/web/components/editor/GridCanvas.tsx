@@ -43,7 +43,8 @@ export function GridCanvas({
         {grid.cells.flatMap((row, r) =>
           row.map((cell, c) => {
             const key = `${r},${c}`;
-            const char = pendingPaint.get(key) ?? cell;
+            const painted = pendingPaint.get(key);
+            const displayCell = painted ?? cell;
             const isCursor = cursor?.row === r && cursor?.col === c;
             const isSelected = !isCursor && selection !== null && cellInRect(r, c, selection);
             const isInProgress =
@@ -58,19 +59,23 @@ export function GridCanvas({
               className = "bg-zinc-700";
             }
 
+            const fg = displayCell.fg;
+            const colorStyle = fg ? { color: `rgb(${fg[0]},${fg[1]},${fg[2]})` } : undefined;
+
             return (
               <div
                 key={key}
                 data-row={r}
                 data-col={c}
                 className={className}
+                style={colorStyle}
                 onPointerDown={(e) => {
                   e.preventDefault();
                   onPointerDown(r, c);
                 }}
                 onPointerEnter={() => onPointerEnter(r, c)}
               >
-                {char === " " ? " " : char}
+                {displayCell.char === " " ? " " : displayCell.char}
               </div>
             );
           }),

@@ -15,6 +15,7 @@ export function useImageGenerator(
   contrast: number,
   threshold: number,
   width: number,
+  colorMode: "color" | "mono" = "mono",
 ): ImageGeneratorResult {
   const [result, setResult] = useState<ImageGeneratorResult>({
     grid: null,
@@ -32,7 +33,7 @@ export function useImageGenerator(
     let cancelled = false;
 
     const id = setTimeout(() => {
-      generateImage(imageData, { charset, contrast, threshold, width })
+      generateImage(imageData, { charset, contrast, threshold, width, colorMode })
         .then((grid) => {
           if (!cancelled) setResult({ grid, error: null, isLoading: false });
         })
@@ -50,7 +51,7 @@ export function useImageGenerator(
       cancelled = true;
       clearTimeout(id);
     };
-  }, [imageData, charset, contrast, threshold, width]);
+  }, [imageData, charset, contrast, threshold, width, colorMode]);
 
   return result;
 }

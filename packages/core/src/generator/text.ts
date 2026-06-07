@@ -21,9 +21,10 @@ function getFont(name: string): FigFont {
 }
 
 function applyWidth(rows: Cell[][], targetWidth: number): Cell[][] {
+  const pad: Cell = { char: " " };
   return rows.map((row) => {
     if (row.length > targetWidth) return row.slice(0, targetWidth);
-    return [...row, ...Array(targetWidth - row.length).fill(" " as Cell)];
+    return [...row, ...Array(targetWidth - row.length).fill(pad)];
   });
 }
 
@@ -56,11 +57,13 @@ function wrapToWidth(font: FigFont, line: string, targetWidth: number): string[]
  *
  * - `options.font`: bundled font name (default: "standard").
  * - `options.width`: wrap words to fit within this column count.
+ * - `options.color`: apply a single foreground color to all cells.
  * - Newlines in `text` produce separate renders stacked vertically.
  */
 export function generateText(text: string, options?: GenerateOptions): AsciiGrid {
   const fontName = options?.font ?? DEFAULT_FONT;
   const targetWidth = options?.width;
+  const color = options?.color;
   const font = getFont(fontName);
   const { height } = font.header;
 
@@ -81,6 +84,14 @@ export function generateText(text: string, options?: GenerateOptions): AsciiGrid
   const allRows = sections.flatMap((section) =>
     finalWidth > 0 ? applyWidth(section, finalWidth) : section,
   );
+
+  if (color !== undefined) {
+    for (const row of allRows) {
+      for (let c = 0; c < row.length; c++) {
+        row[c] = { ...row[c], fg: color };
+      }
+    }
+  }
 
   return { width: finalWidth, height: allRows.length, cells: allRows };
 }

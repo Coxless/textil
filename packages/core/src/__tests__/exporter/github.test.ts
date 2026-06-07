@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { exportGithub } from "../../exporter/github.js";
-import type { AsciiGrid } from "../../types/grid.js";
+import type { AsciiGrid, Cell } from "../../types/grid.js";
 import { makeFilledGrid } from "./helpers.js";
 
 const makeGrid = (width: number, height = 1) => makeFilledGrid(width, height, "x");
@@ -12,12 +12,13 @@ describe("exportGithub", () => {
   });
 
   it("multi-row grid renders all rows in code block", () => {
+    const c = (char: string): Cell => ({ char });
     const grid: AsciiGrid = {
       width: 2,
       height: 2,
       cells: [
-        ["a", "b"],
-        ["c", "d"],
+        [c("a"), c("b")],
+        [c("c"), c("d")],
       ],
     };
     expect(exportGithub(grid).output).toBe("```\nab\ncd\n```");
@@ -43,5 +44,15 @@ describe("exportGithub", () => {
     const { output } = exportGithub(grid);
     const body = output.split("\n").slice(1, -1).join("\n");
     expect(body.length).toBe(90);
+  });
+
+  it("emits color warning for colored grid", () => {
+    const grid: AsciiGrid = {
+      width: 1,
+      height: 1,
+      cells: [[{ char: "X", fg: [0, 255, 0] }]],
+    };
+    const { warnings } = exportGithub(grid);
+    expect(warnings.some((w) => w.includes("color"))).toBe(true);
   });
 });

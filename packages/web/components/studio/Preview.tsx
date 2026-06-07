@@ -1,4 +1,5 @@
-import type { AsciiGrid } from "@textil/core";
+import type { AsciiGrid, Cell, RGBColor } from "@textil/core";
+import type { ReactNode } from "react";
 
 interface PreviewProps {
   grid: AsciiGrid | null;
@@ -15,6 +16,32 @@ function CenteredMessage({ text, className }: { text: string; className: string 
   );
 }
 
+function rgbKey(fg?: RGBColor): string {
+  return fg ? `${fg[0]},${fg[1]},${fg[2]}` : "";
+}
+
+function renderColoredRow(row: Cell[]): ReactNode {
+  type Span = { fg?: RGBColor; text: string };
+  const spans: Span[] = [];
+  for (const cell of row) {
+    const last = spans[spans.length - 1];
+    if (last && rgbKey(last.fg) === rgbKey(cell.fg)) {
+      last.text += cell.char;
+    } else {
+      spans.push({ fg: cell.fg, text: cell.char });
+    }
+  }
+  return spans.map((span, i) => {
+    const style = span.fg ? { color: `rgb(${span.fg[0]},${span.fg[1]},${span.fg[2]})` } : undefined;
+    return (
+      // biome-ignore lint/suspicious/noArrayIndexKey: spans are derived from a fixed grid row, order never changes
+      <span key={i} style={style}>
+        {span.text}
+      </span>
+    );
+  });
+}
+
 export function Preview({
   grid,
   error,
@@ -27,11 +54,25 @@ export function Preview({
 
   if (!grid) return <CenteredMessage text={placeholder} className="text-zinc-600" />;
 
-  const output = grid.cells.map((row) => row.join("")).join("\n");
+  const hasColor = grid.cells.some((row) => row.some((c) => c.fg !== undefined));
 
   return (
     <div className="h-full overflow-auto p-6">
-      <pre className="font-mono text-sm leading-tight text-zinc-100 whitespace-pre">{output}</pre>
+      {hasColor ? (
+        <pre className="font-mono text-sm leading-tight text-zinc-100 whitespace-pre">
+          {grid.cells.map((row, i) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: grid rows are positionally stable
+            <span key={i}>
+              {renderColoredRow(row)}
+              {i < grid.cells.length - 1 ? "\n" : ""}
+            </span>
+          ))}
+        </pre>
+      ) : (
+        <pre className="font-mono text-sm leading-tight text-zinc-100 whitespace-pre">
+          {grid.cells.map((row) => row.map((c) => c.char).join("")).join("\n")}
+        </pre>
+      )}
     </div>
   );
 }

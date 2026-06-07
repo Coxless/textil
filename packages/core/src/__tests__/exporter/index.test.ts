@@ -4,14 +4,16 @@ import { exportGithub } from "../../exporter/github.js";
 import { exportGrid } from "../../exporter/index.js";
 import { exportJson } from "../../exporter/json.js";
 import { exportPlain } from "../../exporter/plain.js";
-import type { AsciiGrid } from "../../types/grid.js";
+import type { AsciiGrid, Cell } from "../../types/grid.js";
+
+const c = (char: string): Cell => ({ char });
 
 const grid: AsciiGrid = {
   width: 3,
   height: 2,
   cells: [
-    ["a", "b", "c"],
-    ["d", "e", "f"],
+    [c("a"), c("b"), c("c")],
+    [c("d"), c("e"), c("f")],
   ],
 };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { type AsciiGrid, type AvailableFontName, generateText } from "@textil/core";
+import { type AsciiGrid, type AvailableFontName, type RGBColor, generateText } from "@textil/core";
 import { useEffect, useState } from "react";
 
 interface GeneratorResult {
@@ -13,6 +13,7 @@ export function useGenerator(
   text: string,
   font: AvailableFontName,
   width: number,
+  color?: RGBColor,
 ): GeneratorResult {
   const [result, setResult] = useState<GeneratorResult>({
     grid: null,
@@ -28,7 +29,7 @@ export function useGenerator(
 
     const id = setTimeout(() => {
       try {
-        const grid = generateText(text, { font, width });
+        const grid = generateText(text, { font, width, color });
         setResult({ grid, error: null, isLoading: false });
       } catch (err) {
         setResult({
@@ -40,7 +41,7 @@ export function useGenerator(
     }, 150);
 
     return () => clearTimeout(id);
-  }, [text, font, width]);
+  }, [text, font, width, color]);
 
   return result;
 }

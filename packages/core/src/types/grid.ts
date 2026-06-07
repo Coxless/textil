@@ -1,4 +1,10 @@
-export type Cell = string;
+export type RGBColor = [number, number, number];
+
+export interface Cell {
+  char: string;
+  fg?: RGBColor;
+  bg?: RGBColor;
+}
 
 export interface AsciiGrid {
   width: number;

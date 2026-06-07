@@ -13,8 +13,8 @@ describe("generateImage", () => {
       for (const row of grid.cells) {
         expect(row).toHaveLength(40);
         for (const cell of row) {
-          expect([...cell]).toHaveLength(1);
-          const cp = cell.codePointAt(0) ?? 0;
+          expect([...cell.char]).toHaveLength(1);
+          const cp = cell.char.codePointAt(0) ?? 0;
           expect(cp).toBeGreaterThanOrEqual(0x2800);
           expect(cp).toBeLessThanOrEqual(0x28ff);
         }
@@ -33,26 +33,28 @@ describe("generateImage", () => {
     it("defaults to standard charset when none specified", async () => {
       const png = makeSolidPng(20, 20, 100, 100, 100);
       const grid = await generateImage(png, { width: 10 });
-      expect(grid.cells.flat().every((c) => typeof c === "string" && c.length === 1)).toBe(true);
+      expect(
+        grid.cells.flat().every((c) => typeof c.char === "string" && c.char.length === 1),
+      ).toBe(true);
     });
 
     it("uses a custom charset string", async () => {
       const png = makeSolidPng(20, 20, 0, 0, 0); // black image
       const grid = await generateImage(png, { width: 10, charset: "AB" });
       // Black → brightness 0 → first char "A"
-      expect(grid.cells[0][0]).toBe("A");
+      expect(grid.cells[0][0].char).toBe("A");
     });
 
     it("maps a pure white image to the last charset character", async () => {
       const png = makeSolidPng(20, 20, 255, 255, 255);
       const grid = await generateImage(png, { width: 10, charset: "standard" });
-      expect(grid.cells[0][0]).toBe("@");
+      expect(grid.cells[0][0].char).toBe("@");
     });
 
     it("maps a pure black image to space", async () => {
       const png = makeSolidPng(20, 20, 0, 0, 0);
       const grid = await generateImage(png, { width: 10, charset: "standard" });
-      expect(grid.cells[0][0]).toBe(" ");
+      expect(grid.cells[0][0].char).toBe(" ");
     });
   });
 
@@ -64,7 +66,7 @@ describe("generateImage", () => {
       const blockChars = new Set([" ", "▀", "▄", "█"]);
       for (const row of grid.cells) {
         for (const cell of row) {
-          expect(blockChars.has(cell)).toBe(true);
+          expect(blockChars.has(cell.char)).toBe(true);
         }
       }
     });
@@ -102,6 +104,38 @@ describe("generateImage", () => {
       const png = makeSolidPng(80, 60, 128, 128, 128);
       const grid = await generateImage(png, { width: 30 });
       expect(grid.cells).toHaveLength(grid.height);
+    });
+  });
+
+  describe("color mode", () => {
+    it("colorMode=color: cells have fg set", async () => {
+      const png = makeSolidPng(20, 20, 255, 0, 0);
+      const grid = await generateImage(png, { width: 10, colorMode: "color" });
+      for (const row of grid.cells) {
+        for (const cell of row) {
+          expect(cell.fg).toBeDefined();
+          expect(cell.fg).toHaveLength(3);
+        }
+      }
+    });
+
+    it("colorMode=color: solid red image produces approximately red fg", async () => {
+      const png = makeSolidPng(20, 20, 255, 0, 0);
+      const grid = await generateImage(png, { width: 10, colorMode: "color" });
+      const fg = grid.cells[0][0].fg;
+      expect(fg?.[0]).toBeGreaterThan(200); // R high
+      expect(fg?.[1]).toBeLessThan(50); // G low
+      expect(fg?.[2]).toBeLessThan(50); // B low
+    });
+
+    it("colorMode=mono (default): cells have no fg", async () => {
+      const png = makeSolidPng(20, 20, 200, 100, 50);
+      const grid = await generateImage(png, { width: 10 });
+      for (const row of grid.cells) {
+        for (const cell of row) {
+          expect(cell.fg).toBeUndefined();
+        }
+      }
     });
   });
 });

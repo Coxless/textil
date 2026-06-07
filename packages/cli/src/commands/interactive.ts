@@ -19,7 +19,7 @@ async function resolveInputGrid(file: string | undefined): Promise<AsciiGrid> {
     return tryParseGrid(buf.toString("utf8"));
   }
   // blank 80×25 grid
-  const cells = Array.from({ length: 25 }, () => Array(80).fill(" ") as string[]);
+  const cells = Array.from({ length: 25 }, () => Array.from({ length: 80 }, () => ({ char: " " })));
   return { width: 80, height: 25, cells };
 }
 

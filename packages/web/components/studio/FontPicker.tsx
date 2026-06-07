@@ -10,7 +10,7 @@ interface FontPickerProps {
 const THUMBNAILS = Object.fromEntries(
   AVAILABLE_FONTS.map((font) => {
     const grid = generateText("Ag", { font, width: 20 });
-    return [font, grid.cells.map((row) => row.join("")).join("\n")];
+    return [font, grid.cells.map((row) => row.map((c) => c.char).join("")).join("\n")];
   }),
 ) as Record<AvailableFontName, string>;
 

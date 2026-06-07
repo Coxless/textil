@@ -153,7 +153,9 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         if (e.key === "Backspace") {
           e.preventDefault();
           const newCol = Math.max(currentCursor.col - 1, 0);
-          setRegion({ row: currentCursor.row, col: newCol, width: 1, height: 1 }, [[" "]]);
+          setRegion({ row: currentCursor.row, col: newCol, width: 1, height: 1 }, [
+            [{ char: " " }],
+          ]);
           setCursor((c) => c && { ...c, col: newCol });
           return;
         }
@@ -186,7 +188,10 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
       if (tool === "pencil" || tool === "eraser") {
         isPaintingRef.current = true;
         pendingPaintMapRef.current.clear();
-        pendingPaintMapRef.current.set(`${row},${col}`, tool === "pencil" ? penChar : " ");
+        pendingPaintMapRef.current.set(
+          `${row},${col}`,
+          tool === "pencil" ? { char: penChar } : { char: " " },
+        );
         bumpPaint();
       } else if (tool === "select") {
         if (selection !== null && cellInRect(row, col, selection)) {
@@ -213,7 +218,10 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
 
       if (tool === "pencil" || tool === "eraser") {
         if (!isPaintingRef.current) return;
-        pendingPaintMapRef.current.set(`${row},${col}`, tool === "pencil" ? penChar : " ");
+        pendingPaintMapRef.current.set(
+          `${row},${col}`,
+          tool === "pencil" ? { char: penChar } : { char: " " },
+        );
         bumpPaint();
       } else if (tool === "select") {
         if (isMoveRef.current && moveStartRef.current !== null && selection !== null) {
@@ -267,7 +275,7 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
       for (let r = minRow; r <= maxRow; r++) {
         const row: Cell[] = [];
         for (let c = minCol; c <= maxCol; c++) {
-          row.push(batch.get(`${r},${c}`) ?? grid.cells[r]?.[c] ?? " ");
+          row.push(batch.get(`${r},${c}`) ?? grid.cells[r]?.[c] ?? { char: " " });
         }
         regionCells.push(row);
       }

@@ -10,6 +10,7 @@ import { sobelEdgeDetect } from "./image/edge.js";
 import type { ImageSource } from "./image/loader/types.js";
 import {
   applyContrast,
+  averageRgbRegion,
   sampleBlockGrid,
   sampleBrailleGrid,
   sampleGrid,
@@ -38,6 +39,7 @@ async function loadImage(source: ImageSource): Promise<RawImage> {
  * - `options.contrast`: contrast adjustment [-1, 1] (default: 0).
  * - `options.threshold`: on/off threshold for braille/block modes [0, 1] (default: 0.5).
  * - `options.edgeDetect`: apply Sobel filter before character mapping (default: false).
+ * - `options.colorMode`: "color" to preserve pixel RGB in cell.fg, "mono" for monochrome (default: "mono").
  */
 export async function generateImage(
   source: ImageSource,
@@ -48,6 +50,7 @@ export async function generateImage(
   const contrast = options?.contrast ?? 0;
   const threshold = options?.threshold ?? DEFAULT_THRESHOLD;
   const edgeDetect = options?.edgeDetect ?? false;
+  const colorMode = options?.colorMode ?? "mono";
 
   const raw = await loadImage(source);
   let gray = toGrayscale(raw);
@@ -64,16 +67,33 @@ export async function generateImage(
 
   if (charset === "braille") {
     const blocks = sampleBrailleGrid(gray, raw.width, raw.height, charWidth, threshold);
-    cells = blocks.map((row) => row.map((block) => pixelsToBraille(block)));
+    cells = blocks.map((row) => row.map((block) => ({ char: pixelsToBraille(block) })));
   } else if (charset === "block") {
     const blocks = sampleBlockGrid(gray, raw.width, raw.height, charWidth);
     cells = blocks.map((row) =>
-      row.map(([top, bottom]) => brightnessToBlock(top, bottom, threshold)),
+      row.map(([top, bottom]) => ({ char: brightnessToBlock(top, bottom, threshold) })),
     );
   } else {
     const cs = charset === "standard" ? STANDARD_CHARSET : charset;
     const grid = sampleGrid(gray, raw.width, raw.height, charWidth);
-    cells = grid.map((row) => row.map((brightness) => brightnessToChar(brightness, cs)));
+    cells = grid.map((row) =>
+      row.map((brightness) => ({ char: brightnessToChar(brightness, cs) })),
+    );
+  }
+
+  if (colorMode === "color") {
+    const outH = cells.length;
+    const outW = charWidth;
+    for (let row = 0; row < outH; row++) {
+      const y0 = Math.floor((row / outH) * raw.height);
+      const y1 = Math.floor(((row + 1) / outH) * raw.height);
+      for (let col = 0; col < outW; col++) {
+        const x0 = Math.floor((col / outW) * raw.width);
+        const x1 = Math.floor(((col + 1) / outW) * raw.width);
+        const fg = averageRgbRegion(raw.data, raw.width, x0, y0, x1, y1);
+        cells[row][col] = { ...cells[row][col], fg };
+      }
+    }
   }
 
   return { width: charWidth, height: cells.length, cells };

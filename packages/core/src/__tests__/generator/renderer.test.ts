@@ -46,7 +46,7 @@ describe("renderText", () => {
     const result = renderText(font, "X");
     for (const row of result) {
       for (const cell of row) {
-        expect(cell).not.toBe("$");
+        expect(cell.char).not.toBe("$");
       }
     }
   });
@@ -62,13 +62,13 @@ describe("renderText", () => {
     expect(result[0]).toHaveLength(4);
   });
 
-  it("each cell is a single character string", () => {
+  it("each cell has a single-character char property", () => {
     const font = makeTestFont();
     const result = renderText(font, "AB");
     for (const row of result) {
       for (const cell of row) {
-        expect(typeof cell).toBe("string");
-        expect(cell).toHaveLength(1);
+        expect(typeof cell.char).toBe("string");
+        expect(cell.char).toHaveLength(1);
       }
     }
   });
