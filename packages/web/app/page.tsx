@@ -166,6 +166,7 @@ export default function StudioPage() {
             grid={grid}
             error={error}
             isLoading={isLoading}
+            width={mode === "text" ? width : imageWidth}
             placeholder={
               mode === "text"
                 ? "Type something to generate ASCII art"
