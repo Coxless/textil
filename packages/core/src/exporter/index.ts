@@ -1,5 +1,5 @@
 import type { AsciiGrid } from "../types/grid.js";
-import type { ExportResult, ExportTarget } from "../types/options.js";
+import type { ExportColorSupport, ExportResult, ExportTarget } from "../types/options.js";
 import { exportAnsi } from "./ansi.js";
 import { exportGithub } from "./github.js";
 import { exportJson } from "./json.js";
@@ -16,7 +16,15 @@ export function exportGrid(grid: AsciiGrid, target: ExportTarget): ExportResult 
   return exporters[target](grid);
 }
 
+export const EXPORT_COLOR_SUPPORT: ExportColorSupport = {
+  plain: false,
+  github: false,
+  ansi: true,
+  json: true,
+};
+
 export { exportPlain } from "./plain.js";
 export { exportGithub } from "./github.js";
 export { exportAnsi } from "./ansi.js";
 export { exportJson, type AsciiGridJson } from "./json.js";
+export { hasColorCells } from "./utils.js";

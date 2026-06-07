@@ -1,14 +1,16 @@
 import { render, screen } from "@testing-library/react";
-import type { AsciiGrid } from "@textil/core";
+import type { AsciiGrid, Cell } from "@textil/core";
 import { describe, expect, it } from "vitest";
 import { Preview } from "./Preview";
+
+const c = (char: string): Cell => ({ char });
 
 const mockGrid: AsciiGrid = {
   width: 3,
   height: 2,
   cells: [
-    ["A", "B", "C"],
-    ["D", "E", "F"],
+    [c("A"), c("B"), c("C")],
+    [c("D"), c("E"), c("F")],
   ],
 };
 

@@ -12,12 +12,12 @@ describe("generateText", () => {
     // Every cell must be a single character
     for (const row of grid.cells) {
       for (const cell of row) {
-        expect(cell).toHaveLength(1);
+        expect(cell.char).toHaveLength(1);
       }
     }
     // No hardblank characters ($) in output
     const allCells = grid.cells.flat();
-    expect(allCells.every((c) => c !== "$")).toBe(true);
+    expect(allCells.every((c) => c.char !== "$")).toBe(true);
   });
 
   it("default font (no options) returns AsciiGrid", () => {
@@ -79,8 +79,27 @@ describe("generateText", () => {
       for (const row of grid.cells) {
         expect(row, `${font} row length`).toHaveLength(grid.width);
         for (const cell of row) {
-          expect(cell, `${font} cell length`).toHaveLength(1);
+          expect(cell.char, `${font} cell char`).toHaveLength(1);
         }
+      }
+    }
+  });
+
+  it("color option: all cells get fg set", () => {
+    const color: [number, number, number] = [255, 0, 0];
+    const grid = generateText("A", { font: "mini", color });
+    for (const row of grid.cells) {
+      for (const cell of row) {
+        expect(cell.fg).toEqual(color);
+      }
+    }
+  });
+
+  it("no color option: cells have no fg", () => {
+    const grid = generateText("A", { font: "mini" });
+    for (const row of grid.cells) {
+      for (const cell of row) {
+        expect(cell.fg).toBeUndefined();
       }
     }
   });

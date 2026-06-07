@@ -1,3 +1,4 @@
+import type { RGBColor } from "../../types/grid.js";
 import type { GrayscaleMap, RawImage } from "./types.js";
 
 /** Convert RGBA RawImage to a normalized grayscale map using standard luminance formula. */
@@ -58,6 +59,33 @@ function averageRegion(
     }
   }
   return sum / count;
+}
+
+/** Average RGB color of a rectangular region in raw RGBA data. */
+export function averageRgbRegion(
+  data: Uint8Array,
+  imgWidth: number,
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+): RGBColor {
+  const cx1 = Math.max(x1, x0 + 1);
+  const cy1 = Math.max(y1, y0 + 1);
+  let r = 0;
+  let g = 0;
+  let b = 0;
+  let count = 0;
+  for (let y = y0; y < cy1; y++) {
+    for (let x = x0; x < cx1; x++) {
+      const i = (y * imgWidth + x) * 4;
+      r += data[i];
+      g += data[i + 1];
+      b += data[i + 2];
+      count++;
+    }
+  }
+  return [Math.round(r / count), Math.round(g / count), Math.round(b / count)];
 }
 
 /**

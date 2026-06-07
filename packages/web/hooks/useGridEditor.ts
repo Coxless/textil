@@ -73,7 +73,7 @@ export function useGridEditor(initialGrid: AsciiGrid): UseGridEditorResult {
 
   const deleteRegion = useCallback(
     (rect: Rect) => {
-      editorRef.current.fill(rect, " ");
+      editorRef.current.fill(rect, { char: " " });
       bumpVersion();
     },
     [bumpVersion],

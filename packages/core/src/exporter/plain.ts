@@ -1,7 +1,11 @@
 import type { AsciiGrid } from "../types/grid.js";
 import type { ExportResult } from "../types/options.js";
-import { cellsToLines } from "./utils.js";
+import { cellsToLines, hasColorCells } from "./utils.js";
 
 export function exportPlain(grid: AsciiGrid): ExportResult {
-  return { output: cellsToLines(grid.cells).join("\n"), warnings: [] };
+  const warnings: string[] = [];
+  if (hasColorCells(grid)) {
+    warnings.push("Grid contains color data — plain text export does not support color.");
+  }
+  return { output: cellsToLines(grid.cells).join("\n"), warnings };
 }

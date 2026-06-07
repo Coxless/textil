@@ -1,7 +1,7 @@
 "use client";
 
 import { renderGridToPng } from "@/lib/export/png";
-import { exportGrid } from "@textil/core";
+import { exportGrid, hasColorCells } from "@textil/core";
 import type { AsciiGrid } from "@textil/core";
 import { useCallback, useEffect, useRef } from "react";
 import { TargetCard } from "./TargetCard";
@@ -10,6 +10,8 @@ interface ExportModalProps {
   grid: AsciiGrid;
   onClose: () => void;
 }
+
+const COLOR_WARNING = "Grid contains color data — will export as monochrome.";
 
 function reactComponentTemplate(plainText: string): string {
   const escaped = plainText.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
@@ -42,15 +44,21 @@ export function ExportModal({ grid, onClose }: ExportModalProps) {
     if (e.key === "Escape") dialogRef.current?.close();
   }, []);
 
+  const isColored = hasColorCells(grid);
+
   const plain = exportGrid(grid, "plain");
   const github = exportGrid(grid, "github");
   const ansi = exportGrid(grid, "ansi");
-  const discordWarnings =
-    plain.output.length > 2000
-      ? [
-          `Output is ${plain.output.length.toLocaleString()} characters — exceeds Discord/Slack's 2000-character limit.`,
-        ]
-      : [];
+
+  const discordWarnings: string[] = [];
+  if (plain.output.length > 2000) {
+    discordWarnings.push(
+      `Output is ${plain.output.length.toLocaleString()} characters — exceeds Discord/Slack's 2000-character limit.`,
+    );
+  }
+  if (isColored) discordWarnings.push(COLOR_WARNING);
+
+  const reactWarnings = isColored ? [COLOR_WARNING] : [];
 
   return (
     <dialog
@@ -106,6 +114,7 @@ export function ExportModal({ grid, onClose }: ExportModalProps) {
           description="Download as a .tsx file"
           output={reactComponentTemplate(plain.output)}
           filename="AsciiArt.tsx"
+          warnings={reactWarnings}
         />
       </div>
     </dialog>

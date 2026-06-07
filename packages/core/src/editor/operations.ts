@@ -24,8 +24,8 @@ export function findReplace(cells: Cell[][], find: string, replace: string): num
   let count = 0;
   for (let r = 0; r < cells.length; r++) {
     for (let c = 0; c < cells[r].length; c++) {
-      if (cells[r][c] === find) {
-        cells[r][c] = replace;
+      if (cells[r][c].char === find) {
+        cells[r][c] = { ...cells[r][c], char: replace };
         count++;
       }
     }
@@ -39,7 +39,7 @@ export function textInsert(cells: Cell[][], row: number, col: number, text: stri
   for (let i = 0; i < text.length; i++) {
     const c = col + i;
     if (c >= 0 && c < cols) {
-      cells[row][c] = text[i];
+      cells[row][c] = { char: text[i] };
     }
   }
 }

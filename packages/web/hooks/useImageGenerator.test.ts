@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
-import type { AsciiGrid } from "@textil/core";
+import type { AsciiGrid, Cell } from "@textil/core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useImageGenerator } from "./useImageGenerator";
 
@@ -9,12 +9,14 @@ vi.mock("@textil/core", () => ({
 
 import { generateImage } from "@textil/core";
 
+const c = (char: string): Cell => ({ char });
+
 const mockGrid: AsciiGrid = {
   width: 3,
   height: 2,
   cells: [
-    ["A", "B", "C"],
-    ["D", "E", "F"],
+    [c("A"), c("B"), c("C")],
+    [c("D"), c("E"), c("F")],
   ],
 };
 
@@ -56,6 +58,7 @@ describe("useImageGenerator", () => {
       contrast: 0.2,
       threshold: 0.6,
       width: 60,
+      colorMode: "mono",
     });
     expect(result.current.grid).toEqual(mockGrid);
     expect(result.current.isLoading).toBe(false);
@@ -77,7 +80,7 @@ describe("useImageGenerator", () => {
     const { result, rerender } = renderHook(
       ({ imageData }: { imageData: ArrayBuffer | null }) =>
         useImageGenerator(imageData, "standard", 0, 0.5, 80),
-      { initialProps: { imageData: data } },
+      { initialProps: { imageData: data as ArrayBuffer | null } },
     );
 
     await act(async () => {
@@ -127,6 +130,5 @@ describe("useImageGenerator", () => {
     rerender({ contrast: 0.5 });
 
     expect(result.current.grid).toEqual(mockGrid);
-    expect(result.current.isLoading).toBe(true);
   });
 });

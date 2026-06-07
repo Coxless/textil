@@ -94,5 +94,5 @@ export function renderText(font: FigFont, text: string, smush?: boolean): Cell[]
   const finalBuf = buf.map((row) => row.replaceAll(hardblank, " "));
 
   // Convert to Cell[][]
-  return finalBuf.map((row) => row.split("").map((ch) => ch as Cell));
+  return finalBuf.map((row) => row.split("").map((ch) => ({ char: ch })));
 }

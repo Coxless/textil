@@ -2,7 +2,9 @@ import type { AsciiGrid, Cell, GridSnapshot, Rect } from "../types/grid.js";
 import { type Command, History } from "./History.js";
 import { cloneCells, fill, findReplace, textInsert } from "./operations.js";
 
-function makeGrid(width: number, height: number, char: Cell = " "): Cell[][] {
+const SPACE_CELL: Cell = { char: " " };
+
+function makeGrid(width: number, height: number, char: Cell = SPACE_CELL): Cell[][] {
   return Array.from({ length: height }, () => Array<Cell>(width).fill(char));
 }
 
@@ -36,7 +38,7 @@ export class GridEditor {
   readonly width: number;
   readonly height: number;
 
-  constructor(width: number, height: number, initial: Cell | Cell[][] = " ") {
+  constructor(width: number, height: number, initial: Cell | Cell[][] = SPACE_CELL) {
     this.width = width;
     this.height = height;
     this.cells = Array.isArray(initial) ? cloneCells(initial) : makeGrid(width, height, initial);
@@ -63,7 +65,7 @@ export class GridEditor {
         if (this.inBounds(r, c)) {
           row.push(this.cells[r][c]);
         } else {
-          row.push(" ");
+          row.push(SPACE_CELL);
         }
       }
       result.push(row);
@@ -117,7 +119,7 @@ export class GridEditor {
     const region = this.getRegion(srcRect);
     const before = cloneCells(this.cells);
     const after = cloneCells(this.cells);
-    fill(after, srcRect, " ");
+    fill(after, srcRect, SPACE_CELL);
     const dstRect: Rect = {
       row: dstRow,
       col: dstCol,

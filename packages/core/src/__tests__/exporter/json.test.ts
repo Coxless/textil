@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { exportJson } from "../../exporter/json.js";
 import type { AsciiGridJson } from "../../exporter/json.js";
+import type { AsciiGrid, Cell } from "../../types/grid.js";
 import { makeFilledGrid as makeGrid } from "./helpers.js";
+
+const c = (char: string): Cell => ({ char });
 
 describe("exportJson", () => {
   it("output is valid JSON", () => {
@@ -36,8 +39,8 @@ describe("exportJson", () => {
       width: 3,
       height: 2,
       cells: [
-        ["a", "b", "c"],
-        ["d", "e", "f"],
+        [c("a"), c("b"), c("c")],
+        [c("d"), c("e"), c("f")],
       ],
     };
     const parsed = JSON.parse(exportJson(grid).output) as AsciiGridJson;
@@ -47,5 +50,21 @@ describe("exportJson", () => {
 
   it("warnings is always empty", () => {
     expect(exportJson(makeGrid(200, 1)).warnings).toEqual([]);
+  });
+
+  it("no colors field for monochrome grid", () => {
+    const parsed = JSON.parse(exportJson(makeGrid(3, 2)).output) as AsciiGridJson;
+    expect(parsed.colors).toBeUndefined();
+  });
+
+  it("includes colors field for colored grid", () => {
+    const grid: AsciiGrid = {
+      width: 2,
+      height: 1,
+      cells: [[{ char: "X", fg: [255, 0, 0] }, c(" ")]],
+    };
+    const parsed = JSON.parse(exportJson(grid).output) as AsciiGridJson;
+    expect(parsed.colors).toBeDefined();
+    expect(parsed.colors?.[0]?.[0]?.fg).toEqual([255, 0, 0]);
   });
 });
