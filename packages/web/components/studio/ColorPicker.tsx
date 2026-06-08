@@ -30,20 +30,26 @@ export function ColorPicker({ value, onChange, label = "Text color" }: ColorPick
 
   return (
     <div>
-      <div className="mb-1 text-xs font-medium text-zinc-400">{label}</div>
+      <div className="mb-1 text-xs font-medium" style={{ color: "var(--fg-3)" }}>
+        {label}
+      </div>
       <div className="flex items-center gap-2">
         <input
           type="color"
           value={hex}
           onChange={handleChange}
-          className="h-7 w-10 cursor-pointer rounded border border-zinc-700 bg-zinc-800 p-0.5"
+          className="h-7 w-10 cursor-pointer rounded p-0.5"
+          style={{ border: "1px solid var(--bd-2)", background: "var(--surf-2)" }}
         />
-        <span className="font-mono text-xs text-zinc-400">{hex}</span>
+        <span className="font-mono text-xs" style={{ color: "var(--fg-3)" }}>
+          {hex}
+        </span>
         {value && (
           <button
             type="button"
             onClick={handleClear}
-            className="ml-auto text-xs text-zinc-500 hover:text-zinc-300"
+            className="ml-auto text-xs transition-colors"
+            style={{ color: "var(--fg-4)" }}
           >
             clear
           </button>

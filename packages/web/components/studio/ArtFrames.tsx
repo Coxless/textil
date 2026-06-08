@@ -6,13 +6,13 @@ export function ArtFrames({ gridWidth }: { gridWidth: number }) {
     <>
       {/* Current editable range frame */}
       <div
-        className="absolute top-0 left-0 bottom-0 border border-white/[0.15] pointer-events-none"
-        style={{ width: `${gridWidth}ch` }}
+        className="absolute top-0 left-0 bottom-0 pointer-events-none"
+        style={{ width: `${gridWidth}ch`, border: "1px solid var(--bd-2)" }}
       >
         {/* Width label — top-right inside frame */}
         <span
-          className="absolute top-1 right-1 font-sans leading-none text-zinc-500/70 pointer-events-none whitespace-nowrap"
-          style={{ fontSize: "9px" }}
+          className="absolute top-1 right-1 font-sans leading-none pointer-events-none whitespace-nowrap"
+          style={{ fontSize: "9px", color: "var(--fg-4)" }}
         >
           {gridWidth}
         </span>

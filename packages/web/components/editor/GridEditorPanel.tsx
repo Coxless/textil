@@ -339,7 +339,7 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         <FindReplacePanel onFindReplace={findReplace} onClose={() => setFindReplaceOpen(false)} />
       )}
       <div className="flex flex-1 overflow-hidden">
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden" style={{ background: "var(--bg)" }}>
           <GridCanvas
             grid={grid}
             zoom={zoom}
@@ -352,7 +352,10 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
             onPointerUp={handlePointerUp}
           />
         </div>
-        <div className="w-48 shrink-0 border-l border-zinc-800 bg-zinc-900 p-4">
+        <div
+          className="w-48 shrink-0 p-4"
+          style={{ borderLeft: "1px solid var(--bd)", background: "var(--surf)" }}
+        >
           <ZoomControl zoom={zoom} onChange={setZoom} />
         </div>
       </div>

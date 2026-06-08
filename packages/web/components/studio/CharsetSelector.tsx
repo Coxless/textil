@@ -14,18 +14,21 @@ interface CharsetSelectorProps {
 export function CharsetSelector({ value, onChange }: CharsetSelectorProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <p className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Charset</p>
+      <p className="text-xs font-medium uppercase tracking-wider" style={{ color: "var(--fg-3)" }}>
+        Charset
+      </p>
       <div className="flex gap-1.5">
         {CHARSETS.map((cs) => (
           <button
             key={cs.value}
             type="button"
             onClick={() => onChange(cs.value)}
-            className={`flex-1 rounded-md border px-2 py-1.5 text-xs font-medium transition-colors ${
+            className="flex-1 rounded-md px-2 py-1.5 text-xs font-medium transition-colors"
+            style={
               cs.value === value
-                ? "border-zinc-400 bg-zinc-700 text-zinc-100"
-                : "border-zinc-700 bg-zinc-800 text-zinc-400 hover:border-zinc-600"
-            }`}
+                ? { border: "1px solid var(--fg-3)", background: "var(--surf-3)", color: "var(--fg)" }
+                : { border: "1px solid var(--bd-2)", background: "var(--surf-2)", color: "var(--fg-3)" }
+            }
           >
             {cs.label}
           </button>

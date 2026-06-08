@@ -71,11 +71,18 @@ export function TargetCard({
   const isDownload = !!getBlob || !!filename;
 
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-zinc-800 bg-zinc-900 p-4">
+    <div
+      className="flex flex-col gap-3 rounded-lg p-4"
+      style={{ border: "1px solid var(--bd)", background: "var(--surf)" }}
+    >
       <div className="flex items-start justify-between gap-2">
         <div>
-          <div className="text-sm font-medium text-zinc-100">{label}</div>
-          <div className="mt-0.5 text-xs text-zinc-500">{description}</div>
+          <div className="text-sm font-medium" style={{ color: "var(--fg)" }}>
+            {label}
+          </div>
+          <div className="mt-0.5 text-xs" style={{ color: "var(--fg-4)" }}>
+            {description}
+          </div>
         </div>
         {warnings && warnings.length > 0 && (
           <span className="shrink-0 rounded bg-amber-900/40 px-2 py-0.5 text-xs text-amber-400">
@@ -94,8 +101,8 @@ export function TargetCard({
       )}
       {preview !== null && (
         <pre
-          className="overflow-hidden rounded bg-zinc-950 p-2 text-xs leading-tight text-zinc-400"
-          style={{ maxHeight: "5.5rem" }}
+          className="overflow-hidden rounded p-2 text-xs leading-tight"
+          style={{ maxHeight: "5.5rem", background: "var(--bg)", color: "var(--fg-3)" }}
         >
           {preview}
         </pre>
@@ -104,7 +111,8 @@ export function TargetCard({
         type="button"
         onClick={isDownload ? handleDownload : handleCopy}
         disabled={status === "loading"}
-        className="mt-auto w-full rounded-md bg-zinc-800 py-1.5 text-xs font-medium text-zinc-300 transition-colors hover:bg-zinc-700 hover:text-zinc-100 disabled:opacity-50"
+        className="mt-auto w-full rounded-md py-1.5 text-xs font-medium transition-colors disabled:opacity-50"
+        style={{ background: "var(--surf-2)", color: "var(--fg-2)" }}
       >
         {status === "copied"
           ? "Copied!"

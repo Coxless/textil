@@ -10,10 +10,12 @@ interface PreviewProps {
   width?: number;
 }
 
-function CenteredMessage({ text, className }: { text: string; className: string }) {
+function CenteredMessage({ text, style }: { text: string; style?: React.CSSProperties }) {
   return (
     <div className="flex h-full items-center justify-center">
-      <p className={`font-mono text-sm ${className}`}>{text}</p>
+      <p className="font-mono text-sm" style={style}>
+        {text}
+      </p>
     </div>
   );
 }
@@ -51,11 +53,12 @@ export function Preview({
   placeholder = "Type something to generate ASCII art",
   width,
 }: PreviewProps) {
-  if (error) return <CenteredMessage text={error} className="text-red-400" />;
+  if (error) return <CenteredMessage text={error} style={{ color: "#f87171" }} />;
 
-  if (!grid && isLoading) return <CenteredMessage text="Generating…" className="text-zinc-500" />;
+  if (!grid && isLoading)
+    return <CenteredMessage text="Generating…" style={{ color: "var(--fg-4)" }} />;
 
-  if (!grid) return <CenteredMessage text={placeholder} className="text-zinc-600" />;
+  if (!grid) return <CenteredMessage text={placeholder} style={{ color: "var(--fg-5)" }} />;
 
   const hasColor = grid.cells.some((row) => row.some((c) => c.fg !== undefined));
   const displayWidth = width ?? grid.width;
@@ -69,7 +72,7 @@ export function Preview({
         style={{ minWidth: `${containerMinWidth}ch` }}
       >
         {hasColor ? (
-          <pre className="text-zinc-100 whitespace-pre">
+          <pre className="whitespace-pre" style={{ color: "var(--fg)" }}>
             {grid.cells.map((row, i) => (
               // biome-ignore lint/suspicious/noArrayIndexKey: grid rows are positionally stable
               <span key={i}>
@@ -79,7 +82,7 @@ export function Preview({
             ))}
           </pre>
         ) : (
-          <pre className="text-zinc-100 whitespace-pre">
+          <pre className="whitespace-pre" style={{ color: "var(--fg)" }}>
             {grid.cells.map((row) => row.map((c) => c.char).join("")).join("\n")}
           </pre>
         )}

@@ -30,7 +30,10 @@ export function GridCanvas({
   const containerMinWidth = Math.max(grid.width, GITHUB_COLS) + 2;
 
   return (
-    <div className="h-full overflow-auto p-6 pt-12 font-mono text-sm text-zinc-100">
+    <div
+      className="h-full overflow-auto p-6 pt-12 font-mono text-sm"
+      style={{ color: "var(--fg)" }}
+    >
       <div
         className="relative inline-block"
         style={{ fontSize: `${zoom}%`, minWidth: `${containerMinWidth}ch` }}
@@ -56,25 +59,30 @@ export function GridCanvas({
               const isInProgress =
                 !isCursor && selectionInProgress !== null && cellInRect(r, c, selectionInProgress);
 
-              let className = "";
+              let bgStyle: React.CSSProperties = {};
               if (isCursor) {
-                className = "bg-zinc-600 outline outline-1 -outline-offset-1 outline-zinc-400";
+                bgStyle = {
+                  background: "var(--surf-4)",
+                  outline: "1px solid var(--fg-3)",
+                  outlineOffset: "-1px",
+                };
               } else if (isInProgress) {
-                className = "bg-zinc-600";
+                bgStyle = { background: "var(--surf-4)" };
               } else if (isSelected) {
-                className = "bg-zinc-700";
+                bgStyle = { background: "var(--surf-3)" };
               }
 
               const fg = displayCell.fg;
-              const colorStyle = fg ? { color: `rgb(${fg[0]},${fg[1]},${fg[2]})` } : undefined;
+              const colorStyle: React.CSSProperties = fg
+                ? { color: `rgb(${fg[0]},${fg[1]},${fg[2]})` }
+                : {};
 
               return (
                 <div
                   key={key}
                   data-row={r}
                   data-col={c}
-                  className={className}
-                  style={colorStyle}
+                  style={{ ...bgStyle, ...colorStyle }}
                   onPointerDown={(e) => {
                     e.preventDefault();
                     onPointerDown(r, c);
