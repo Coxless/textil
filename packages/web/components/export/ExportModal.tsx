@@ -65,14 +65,16 @@ export function ExportModal({ grid, onClose }: ExportModalProps) {
       ref={dialogRef}
       onClick={handleBackdropClick}
       onKeyDown={handleKeyDown}
-      className="m-auto max-h-[80vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-zinc-700 bg-zinc-950 p-6 text-zinc-100 backdrop:bg-black/60"
+      className="m-auto max-h-[80vh] w-full max-w-2xl overflow-y-auto rounded-xl p-6 backdrop:bg-black/60"
+      style={{ border: "1px solid var(--bd-2)", background: "var(--surf)", color: "var(--fg)" }}
     >
       <div className="mb-5 flex items-center justify-between">
         <h2 className="text-base font-semibold">Export</h2>
         <button
           type="button"
           onClick={() => dialogRef.current?.close()}
-          className="text-sm text-zinc-500 transition-colors hover:text-zinc-100"
+          className="text-sm transition-colors"
+          style={{ color: "var(--fg-4)" }}
         >
           ✕
         </button>

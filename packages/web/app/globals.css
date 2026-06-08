@@ -10,27 +10,75 @@
   box-sizing: border-box;
 }
 
+/* ── Semantic color tokens ─────────────────────────────────────────── */
+
+:root {
+  /* Surfaces */
+  --bg:          #f8fafc;
+  --surf:        #ffffff;
+  --surf-2:      #f1f5f9;
+  --surf-3:      #e2e8f0;
+  --surf-4:      #cbd5e1;
+  --surf-2a:     rgba(241,245,249,0.7);
+  --surf-ov:     rgba(255,255,255,0.88);
+
+  /* Text */
+  --fg:          #0f172a;
+  --fg-2:        #334155;
+  --fg-3:        #64748b;
+  --fg-4:        #94a3b8;
+  --fg-5:        #cbd5e1;
+
+  /* Borders */
+  --bd:          rgba(0,0,0,0.08);
+  --bd-2:        rgba(0,0,0,0.14);
+
+  /* Dot grid */
+  --dot:         rgba(51,65,85,0.08);
+}
+
+.dark {
+  --bg:          #030711;
+  --surf:        #18181b;
+  --surf-2:      #27272a;
+  --surf-3:      #3f3f46;
+  --surf-4:      #52525b;
+  --surf-2a:     rgba(39,39,42,0.6);
+  --surf-ov:     rgba(24,24,27,0.85);
+
+  --fg:          #f4f4f5;
+  --fg-2:        #d4d4d8;
+  --fg-3:        #a1a1aa;
+  --fg-4:        #71717a;
+  --fg-5:        #52525b;
+
+  --bd:          rgba(255,255,255,0.07);
+  --bd-2:        rgba(255,255,255,0.13);
+
+  --dot:         rgba(148,163,184,0.055);
+}
+
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
   font-family: var(--font-sans);
-  background-color: #030711;
-  color: #e4e4e7;
+  background-color: var(--bg);
+  color: var(--fg);
 }
 
 /* Dot-grid background for main preview area */
 .dot-grid {
-  background-color: #030711;
-  background-image: radial-gradient(rgba(148, 163, 184, 0.055) 1px, transparent 1px);
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
   background-size: 28px 28px;
 }
 
 /* Thin scrollbar */
 .scrollbar-thin {
   scrollbar-width: thin;
-  scrollbar-color: #27272a transparent;
+  scrollbar-color: var(--surf-3) transparent;
 }
 
 .scrollbar-thin::-webkit-scrollbar {
@@ -42,6 +90,6 @@ body {
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: #27272a;
+  background-color: var(--surf-3);
   border-radius: 2px;
 }

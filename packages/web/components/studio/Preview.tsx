@@ -1,17 +1,21 @@
 import type { AsciiGrid, Cell, RGBColor } from "@textil/core";
 import type { ReactNode } from "react";
+import { ArtFrames, GITHUB_COLS } from "./ArtFrames";
 
 interface PreviewProps {
   grid: AsciiGrid | null;
   error: string | null;
   isLoading?: boolean;
   placeholder?: string;
+  width?: number;
 }
 
-function CenteredMessage({ text, className }: { text: string; className: string }) {
+function CenteredMessage({ text, style }: { text: string; style?: React.CSSProperties }) {
   return (
     <div className="flex h-full items-center justify-center">
-      <p className={`font-mono text-sm ${className}`}>{text}</p>
+      <p className="font-mono text-sm" style={style}>
+        {text}
+      </p>
     </div>
   );
 }
@@ -47,32 +51,43 @@ export function Preview({
   error,
   isLoading,
   placeholder = "Type something to generate ASCII art",
+  width,
 }: PreviewProps) {
-  if (error) return <CenteredMessage text={error} className="text-red-400" />;
+  if (error) return <CenteredMessage text={error} style={{ color: "#f87171" }} />;
 
-  if (!grid && isLoading) return <CenteredMessage text="Generating…" className="text-zinc-500" />;
+  if (!grid && isLoading)
+    return <CenteredMessage text="Generating…" style={{ color: "var(--fg-4)" }} />;
 
-  if (!grid) return <CenteredMessage text={placeholder} className="text-zinc-600" />;
+  if (!grid) return <CenteredMessage text={placeholder} style={{ color: "var(--fg-5)" }} />;
 
   const hasColor = grid.cells.some((row) => row.some((c) => c.fg !== undefined));
+  const displayWidth = width ?? grid.width;
+  // Extend the container to always show both limit markers
+  const containerMinWidth = Math.max(displayWidth, GITHUB_COLS) + 2;
 
   return (
-    <div className="h-full overflow-auto p-6">
-      {hasColor ? (
-        <pre className="font-mono text-sm leading-tight text-zinc-100 whitespace-pre">
-          {grid.cells.map((row, i) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: grid rows are positionally stable
-            <span key={i}>
-              {renderColoredRow(row)}
-              {i < grid.cells.length - 1 ? "\n" : ""}
-            </span>
-          ))}
-        </pre>
-      ) : (
-        <pre className="font-mono text-sm leading-tight text-zinc-100 whitespace-pre">
-          {grid.cells.map((row) => row.map((c) => c.char).join("")).join("\n")}
-        </pre>
-      )}
+    <div className="h-full overflow-auto p-6 pt-12">
+      <div
+        className="relative inline-block font-mono text-sm leading-tight"
+        style={{ minWidth: `${containerMinWidth}ch` }}
+      >
+        {hasColor ? (
+          <pre className="whitespace-pre" style={{ color: "var(--fg)" }}>
+            {grid.cells.map((row, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: grid rows are positionally stable
+              <span key={i}>
+                {renderColoredRow(row)}
+                {i < grid.cells.length - 1 ? "\n" : ""}
+              </span>
+            ))}
+          </pre>
+        ) : (
+          <pre className="whitespace-pre" style={{ color: "var(--fg)" }}>
+            {grid.cells.map((row) => row.map((c) => c.char).join("")).join("\n")}
+          </pre>
+        )}
+        <ArtFrames gridWidth={displayWidth} />
+      </div>
     </div>
   );
 }

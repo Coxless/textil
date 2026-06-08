@@ -1,5 +1,6 @@
 "use client";
 
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { GridEditorPanel } from "@/components/editor/GridEditorPanel";
 import { ExportModal } from "@/components/export/ExportModal";
 import { CharsetSelector } from "@/components/studio/CharsetSelector";
@@ -13,11 +14,11 @@ import { TextInput } from "@/components/studio/TextInput";
 import { WidthSlider } from "@/components/studio/WidthSlider";
 import { useGenerator } from "@/hooks/useGenerator";
 import { useImageGenerator } from "@/hooks/useImageGenerator";
-import { type AvailableFontName, DEFAULT_FONT, type RGBColor } from "@textil/core";
+import { type AsciiGrid, type AvailableFontName, DEFAULT_FONT, type RGBColor } from "@textil/core";
 import { useEffect, useState } from "react";
 
 function Divider() {
-  return <div className="h-px bg-white/[0.05] -mx-5" />;
+  return <div className="h-px -mx-5" style={{ background: "var(--bd)" }} />;
 }
 
 export default function StudioPage() {
@@ -36,6 +37,7 @@ export default function StudioPage() {
   const [colorMode, setColorMode] = useState<"color" | "mono">("mono");
 
   const [editMode, setEditMode] = useState(false);
+  const [editedGrid, setEditedGrid] = useState<AsciiGrid | null>(null);
   const [showExport, setShowExport] = useState(false);
 
   const textResult = useGenerator(text, font, width, textColor);
@@ -53,14 +55,26 @@ export default function StudioPage() {
   // biome-ignore lint/correctness/useExhaustiveDependencies: grid is the change trigger, not read inside
   useEffect(() => {
     setEditMode(false);
+    setEditedGrid(null);
   }, [grid]);
+
+  const displayGrid = editedGrid ?? grid;
 
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
-      <aside className="scrollbar-thin flex w-72 shrink-0 flex-col overflow-y-auto border-r border-white/[0.06] bg-zinc-900/95 backdrop-blur-xl">
+      <aside
+        className="scrollbar-thin flex w-72 shrink-0 flex-col overflow-y-auto backdrop-blur-xl"
+        style={{
+          background: "var(--surf)",
+          borderRight: "1px solid var(--bd)",
+        }}
+      >
         {/* Brand */}
-        <div className="flex items-center gap-2.5 px-5 py-4 border-b border-white/[0.06]">
+        <div
+          className="flex items-center gap-2.5 px-5 py-4"
+          style={{ borderBottom: "1px solid var(--bd)" }}
+        >
           <span
             className="font-mono text-base font-bold"
             style={{
@@ -72,24 +86,32 @@ export default function StudioPage() {
           >
             textil
           </span>
-          <span className="text-[9px] px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-500 font-mono uppercase tracking-[0.15em]">
+          <span
+            className="text-[9px] px-1.5 py-0.5 rounded font-mono uppercase tracking-[0.15em]"
+            style={{ background: "var(--surf-2)", color: "var(--fg-4)" }}
+          >
             studio
           </span>
+          <ThemeToggle />
         </div>
 
         <div className="flex flex-col gap-4 p-5 flex-1">
           {/* Mode toggle */}
-          <div className="flex p-0.5 rounded-lg bg-zinc-800/60 border border-white/[0.04]">
+          <div
+            className="flex p-0.5 rounded-lg"
+            style={{ background: "var(--surf-2)", border: "1px solid var(--bd)" }}
+          >
             {(["text", "image"] as const).map((m) => (
               <button
                 key={m}
                 type="button"
                 onClick={() => setMode(m)}
-                className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-all capitalize cursor-pointer ${
+                className="flex-1 py-1.5 text-xs font-medium rounded-md transition-all capitalize cursor-pointer"
+                style={
                   m === mode
-                    ? "bg-zinc-700 text-zinc-100 shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-300"
-                }`}
+                    ? { background: "var(--surf-3)", color: "var(--fg)", boxShadow: "0 1px 2px var(--bd)" }
+                    : { color: "var(--fg-4)" }
+                }
               >
                 {m}
               </button>
@@ -123,14 +145,27 @@ export default function StudioPage() {
           )}
 
           {/* Action buttons */}
-          {grid && !editMode && (
+          {displayGrid && !editMode && (
             <div className="mt-auto flex flex-col gap-2 pt-4">
               <Divider />
               <div className="flex flex-col gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => setEditMode(true)}
-                  className="w-full rounded-lg border border-zinc-700/80 bg-zinc-800/60 py-2 text-xs font-medium text-zinc-400 transition-all hover:bg-zinc-700/80 hover:text-zinc-200 hover:border-zinc-600 cursor-pointer"
+                  className="w-full rounded-lg py-2 text-xs font-medium transition-all cursor-pointer"
+                  style={{
+                    border: "1px solid var(--bd-2)",
+                    background: "var(--surf-2a)",
+                    color: "var(--fg-3)",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.background = "var(--surf-3)";
+                    (e.currentTarget as HTMLButtonElement).style.color = "var(--fg)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.background = "var(--surf-2a)";
+                    (e.currentTarget as HTMLButtonElement).style.color = "var(--fg-3)";
+                  }}
                 >
                   Edit grid
                 </button>
@@ -159,13 +194,17 @@ export default function StudioPage() {
 
       {/* Main */}
       <main className="flex-1 overflow-hidden dot-grid">
-        {editMode && grid ? (
-          <GridEditorPanel initialGrid={grid} onExitEdit={() => setEditMode(false)} />
+        {editMode && displayGrid ? (
+          <GridEditorPanel
+            initialGrid={displayGrid}
+            onExitEdit={(g) => { setEditedGrid(g); setEditMode(false); }}
+          />
         ) : (
           <Preview
-            grid={grid}
+            grid={displayGrid}
             error={error}
             isLoading={isLoading}
+            width={mode === "text" ? width : imageWidth}
             placeholder={
               mode === "text"
                 ? "Type something to generate ASCII art"
@@ -175,7 +214,7 @@ export default function StudioPage() {
         )}
       </main>
 
-      {showExport && grid && <ExportModal grid={grid} onClose={() => setShowExport(false)} />}
+      {showExport && displayGrid && <ExportModal grid={displayGrid} onClose={() => setShowExport(false)} />}
     </div>
   );
 }

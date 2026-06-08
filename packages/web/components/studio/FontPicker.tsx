@@ -17,22 +17,30 @@ const THUMBNAILS = Object.fromEntries(
 export function FontPicker({ value, onChange }: FontPickerProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <p className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Font</p>
+      <p className="text-xs font-medium uppercase tracking-wider" style={{ color: "var(--fg-3)" }}>
+        Font
+      </p>
       <div className="grid grid-cols-2 gap-1.5">
         {AVAILABLE_FONTS.map((font) => (
           <button
             key={font}
             type="button"
             onClick={() => onChange(font)}
-            className={`flex flex-col gap-1 rounded-md border p-2 text-left transition-colors ${
+            className="flex flex-col gap-1 rounded-md p-2 text-left transition-colors"
+            style={
               font === value
-                ? "border-zinc-400 bg-zinc-700"
-                : "border-zinc-700 bg-zinc-800 hover:border-zinc-600 hover:bg-zinc-750"
-            }`}
+                ? { border: "1px solid var(--fg-3)", background: "var(--surf-3)" }
+                : { border: "1px solid var(--bd-2)", background: "var(--surf-2)" }
+            }
           >
-            <span className="text-[10px] font-medium text-zinc-400">{font}</span>
+            <span className="text-[10px] font-medium" style={{ color: "var(--fg-3)" }}>
+              {font}
+            </span>
             <div className="overflow-hidden">
-              <pre className="origin-top-left scale-[0.35] font-mono text-[10px] leading-tight text-zinc-300 whitespace-pre">
+              <pre
+                className="origin-top-left scale-[0.35] font-mono text-[10px] leading-tight whitespace-pre"
+                style={{ color: "var(--fg-2)" }}
+              >
                 {THUMBNAILS[font]}
               </pre>
             </div>
