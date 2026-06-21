@@ -46,7 +46,8 @@ const TOOL_META: Record<Tool, { nm: string; ds: string; icon: string }> = {
 };
 
 export default function Inspector() {
-  const { tool, char, setChar, findReplace, showToast } = useStudio();
+  const { tool, char, setChar, findReplace, showToast, openDeploy, grid } = useStudio();
+  const hasContent = grid.length > 0;
   const [frFind, setFrFind] = useState("@");
   const [frRepl, setFrRepl] = useState("#");
   const meta = TOOL_META[tool];
@@ -179,6 +180,18 @@ export default function Inspector() {
             </div>
           ))}
         </div>
+
+        <div className={styles.hr} />
+
+        <button
+          type="button"
+          className={styles.btnAmber}
+          onClick={openDeploy}
+          disabled={!hasContent}
+          style={!hasContent ? { opacity: 0.4, cursor: "default" } : undefined}
+        >
+          Deploy →
+        </button>
       </div>
     </aside>
   );
