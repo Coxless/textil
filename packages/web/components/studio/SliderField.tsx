@@ -46,7 +46,7 @@ export function SliderField({
         className="w-full"
         style={{ accentColor: "var(--fg-3)" }}
       />
-      <div className="flex justify-between text-xs" style={{ color: "var(--fg-5)" }}>
+      <div className="flex justify-between text-xs" style={{ color: "var(--fg-4)" }}>
         <span>{min}</span>
         <span>{max}</span>
       </div>

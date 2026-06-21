@@ -33,7 +33,7 @@ export function FontPicker({ value, onChange }: FontPickerProps) {
                 : { border: "1px solid var(--bd-2)", background: "var(--surf-2)" }
             }
           >
-            <span className="text-[10px] font-medium" style={{ color: "var(--fg-3)" }}>
+            <span className="text-xs font-medium" style={{ color: "var(--fg-3)" }}>
               {font}
             </span>
             <div className="overflow-hidden">
