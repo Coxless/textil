@@ -4,6 +4,34 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
+/* ── Studio design tokens (always defined; used only on /studio) ──── */
+:root {
+  --ink: #0e1726;
+  --ink-2: #16202f;
+  --ink-3: #1e2a3a;
+  --ink-4: #27374b;
+  --paper: #f4efe6;
+  --paper-2: #ebe4d6;
+  --paper-line: rgba(43, 43, 40, 0.1);
+  --graphite: #2b2b28;
+  --graphite-soft: #6b675e;
+  --amber: #e8923b;
+  --amber-2: #f2a857;
+  --amber-glow: rgba(232, 146, 59, 0.28);
+  --mist: #8a97a8;
+  --cloud: #dce3ec;
+  --cloud-dim: #aeb9c8;
+  --line: rgba(220, 227, 236, 0.1);
+  --line-2: rgba(220, 227, 236, 0.16);
+  --good: #5fb98e;
+  --r: 10px;
+  --r-sm: 7px;
+  --rail: 268px;
+  --insp: 300px;
+  --head: 56px;
+  --status: 34px;
+}
+
 *,
 *::before,
 *::after {
