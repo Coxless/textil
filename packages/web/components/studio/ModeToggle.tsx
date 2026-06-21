@@ -9,10 +9,7 @@ export function ModeToggle({ value, onChange }: ModeToggleProps) {
       <div className="mb-1 text-xs font-medium" style={{ color: "var(--fg-3)" }}>
         Color mode
       </div>
-      <div
-        className="flex overflow-hidden rounded-md"
-        style={{ border: "1px solid var(--bd-2)" }}
-      >
+      <div className="flex overflow-hidden rounded-md" style={{ border: "1px solid var(--bd-2)" }}>
         {(["mono", "color"] as const).map((m) => (
           <button
             key={m}

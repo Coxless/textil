@@ -1330,3 +1330,70 @@
     transition: none !important;
   }
 }
+
+/* ---------- :focus-visible — keyboard navigation ---------- */
+.app button:focus-visible,
+.app input[type="range"]:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+.app input[type="text"]:focus-visible,
+.app textarea:focus-visible {
+  outline: none;
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px var(--amber-glow);
+}
+
+.app input:focus:not(:focus-visible),
+.app button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ---------- mobile degradation (< 768px) ---------- */
+@media (max-width: 767px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: var(--head) auto 1fr var(--status);
+    grid-template-areas:
+      "head"
+      "rail"
+      "canvas"
+      "status";
+  }
+
+  .insp {
+    display: none;
+  }
+
+  .rail {
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    max-height: 220px;
+  }
+
+  .canvasScroll {
+    padding: 24px;
+  }
+
+  .dock {
+    bottom: 10px;
+    gap: 2px;
+    padding: 4px;
+  }
+
+  .dock .tool {
+    width: 34px;
+    height: 34px;
+  }
+
+  .dock .charChip {
+    width: 34px;
+    height: 34px;
+  }
+
+  .dock .mini {
+    width: 30px;
+    height: 34px;
+  }
+}

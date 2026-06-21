@@ -109,7 +109,11 @@ export default function StudioPage() {
                 className="flex-1 py-1.5 text-xs font-medium rounded-md transition-all capitalize cursor-pointer"
                 style={
                   m === mode
-                    ? { background: "var(--surf-3)", color: "var(--fg)", boxShadow: "0 1px 2px var(--bd)" }
+                    ? {
+                        background: "var(--surf-3)",
+                        color: "var(--fg)",
+                        boxShadow: "0 1px 2px var(--bd)",
+                      }
                     : { color: "var(--fg-4)" }
                 }
               >
@@ -197,7 +201,10 @@ export default function StudioPage() {
         {editMode && displayGrid ? (
           <GridEditorPanel
             initialGrid={displayGrid}
-            onExitEdit={(g) => { setEditedGrid(g); setEditMode(false); }}
+            onExitEdit={(g) => {
+              setEditedGrid(g);
+              setEditMode(false);
+            }}
           />
         ) : (
           <Preview
@@ -214,7 +221,9 @@ export default function StudioPage() {
         )}
       </main>
 
-      {showExport && displayGrid && <ExportModal grid={displayGrid} onClose={() => setShowExport(false)} />}
+      {showExport && displayGrid && (
+        <ExportModal grid={displayGrid} onClose={() => setShowExport(false)} />
+      )}
     </div>
   );
 }

@@ -58,10 +58,7 @@ export function Toolbar({
       className="flex shrink-0 items-center gap-3 px-4 py-2"
       style={{ borderBottom: "1px solid var(--bd)", background: "var(--surf)" }}
     >
-      <div
-        className="flex overflow-hidden rounded-md"
-        style={{ border: "1px solid var(--bd-2)" }}
-      >
+      <div className="flex overflow-hidden rounded-md" style={{ border: "1px solid var(--bd-2)" }}>
         {TOOLS.map(({ id, label, shortcut }) => (
           <button
             key={id}
