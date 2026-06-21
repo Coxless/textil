@@ -24,10 +24,16 @@ export function SliderField({
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between">
-        <label htmlFor={id} className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
+        <label
+          htmlFor={id}
+          className="text-xs font-medium uppercase tracking-wider"
+          style={{ color: "var(--fg-3)" }}
+        >
           {label}
         </label>
-        <span className="font-mono text-xs text-zinc-300">{format ? format(value) : value}</span>
+        <span className="font-mono text-xs" style={{ color: "var(--fg-2)" }}>
+          {format ? format(value) : value}
+        </span>
       </div>
       <input
         id={id}
@@ -37,9 +43,10 @@ export function SliderField({
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-zinc-400"
+        className="w-full"
+        style={{ accentColor: "var(--fg-3)" }}
       />
-      <div className="flex justify-between text-xs text-zinc-600">
+      <div className="flex justify-between text-xs" style={{ color: "var(--fg-5)" }}>
         <span>{min}</span>
         <span>{max}</span>
       </div>

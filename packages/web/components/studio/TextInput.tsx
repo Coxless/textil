@@ -18,7 +18,8 @@ export function TextInput({ value, onChange }: TextInputProps) {
     <div className="flex flex-col gap-1.5">
       <label
         htmlFor="studio-text-input"
-        className="text-xs font-medium text-zinc-400 uppercase tracking-wider"
+        className="text-xs font-medium uppercase tracking-wider"
+        style={{ color: "var(--fg-3)" }}
       >
         Text
       </label>
@@ -28,7 +29,12 @@ export function TextInput({ value, onChange }: TextInputProps) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         rows={2}
-        className="w-full resize-none rounded-md border border-zinc-700 bg-zinc-800 px-3 py-2 font-mono text-sm text-zinc-100 placeholder-zinc-600 focus:border-zinc-500 focus:outline-none"
+        className="w-full resize-none rounded-md px-3 py-2 font-mono text-sm focus:outline-none"
+        style={{
+          border: "1px solid var(--bd-2)",
+          background: "var(--surf-2)",
+          color: "var(--fg)",
+        }}
         placeholder="Enter text…"
       />
     </div>

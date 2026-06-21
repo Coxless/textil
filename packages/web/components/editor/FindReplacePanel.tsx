@@ -22,9 +22,12 @@ export function FindReplacePanel({ onFindReplace, onClose }: FindReplacePanelPro
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex shrink-0 items-center gap-3 border-b border-zinc-800 bg-zinc-900 px-4 py-2"
+      className="flex shrink-0 items-center gap-3 px-4 py-2"
+      style={{ borderBottom: "1px solid var(--bd)", background: "var(--surf)" }}
     >
-      <span className="text-xs font-medium text-zinc-500">Find & Replace</span>
+      <span className="text-xs font-medium" style={{ color: "var(--fg-4)" }}>
+        Find & Replace
+      </span>
       <input
         type="text"
         maxLength={1}
@@ -34,9 +37,16 @@ export function FindReplacePanel({ onFindReplace, onClose }: FindReplacePanelPro
           setFind(e.target.value);
           setLastCount(null);
         }}
-        className="w-20 rounded border border-zinc-700 bg-zinc-800 px-2 py-1 font-mono text-sm text-zinc-100 placeholder-zinc-600"
+        className="w-20 rounded px-2 py-1 font-mono text-sm"
+        style={{
+          border: "1px solid var(--bd-2)",
+          background: "var(--surf-2)",
+          color: "var(--fg)",
+        }}
       />
-      <span className="text-xs text-zinc-600">→</span>
+      <span className="text-xs" style={{ color: "var(--fg-5)" }}>
+        →
+      </span>
       <input
         type="text"
         maxLength={1}
@@ -46,24 +56,31 @@ export function FindReplacePanel({ onFindReplace, onClose }: FindReplacePanelPro
           setReplace(e.target.value);
           setLastCount(null);
         }}
-        className="w-20 rounded border border-zinc-700 bg-zinc-800 px-2 py-1 font-mono text-sm text-zinc-100 placeholder-zinc-600"
+        className="w-20 rounded px-2 py-1 font-mono text-sm"
+        style={{
+          border: "1px solid var(--bd-2)",
+          background: "var(--surf-2)",
+          color: "var(--fg)",
+        }}
       />
       <button
         type="submit"
         disabled={!find}
-        className="rounded bg-zinc-700 px-3 py-1 text-xs font-medium text-zinc-100 transition-colors hover:bg-zinc-600 disabled:cursor-not-allowed disabled:opacity-40"
+        className="rounded px-3 py-1 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+        style={{ background: "var(--surf-3)", color: "var(--fg)" }}
       >
         Replace All
       </button>
       {lastCount !== null && (
-        <span className="text-xs text-zinc-500">
+        <span className="text-xs" style={{ color: "var(--fg-4)" }}>
           {lastCount === 0 ? "No matches" : `Replaced ${lastCount}`}
         </span>
       )}
       <button
         type="button"
         onClick={onClose}
-        className="ml-auto text-lg leading-none text-zinc-500 hover:text-zinc-300"
+        className="ml-auto text-lg leading-none transition-colors"
+        style={{ color: "var(--fg-4)" }}
         aria-label="Close find & replace"
       >
         ×

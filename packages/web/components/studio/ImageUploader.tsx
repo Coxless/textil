@@ -58,15 +58,21 @@ export function ImageUploader({ onImageLoad, onClear }: ImageUploaderProps) {
 
   return (
     <div className="flex flex-col gap-1.5">
-      <p className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Image</p>
+      <p className="text-xs font-medium uppercase tracking-wider" style={{ color: "var(--fg-3)" }}>
+        Image
+      </p>
       {thumbnailUrl ? (
-        <div className="relative overflow-hidden rounded-md border border-zinc-700">
+        <div
+          className="relative overflow-hidden rounded-md"
+          style={{ border: "1px solid var(--bd-2)" }}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={thumbnailUrl} alt="Uploaded preview" className="w-full object-cover" />
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-1.5 top-1.5 rounded bg-zinc-900/80 px-1.5 py-0.5 text-xs text-zinc-300 hover:bg-zinc-900"
+            className="absolute right-1.5 top-1.5 rounded px-1.5 py-0.5 text-xs transition-colors"
+            style={{ background: "var(--surf-ov)", color: "var(--fg-2)" }}
           >
             Remove
           </button>
@@ -82,14 +88,19 @@ export function ImageUploader({ onImageLoad, onClear }: ImageUploaderProps) {
           }}
           onDragLeave={() => setIsDragActive(false)}
           onDrop={handleDrop}
-          className={`flex h-24 flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed transition-colors ${
+          className="flex h-24 flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed transition-colors"
+          style={
             isDragActive
-              ? "border-zinc-400 bg-zinc-800"
-              : "border-zinc-700 bg-zinc-800/50 hover:border-zinc-600"
-          }`}
+              ? { borderColor: "var(--fg-3)", background: "var(--surf-2)" }
+              : { borderColor: "var(--bd-2)", background: "var(--surf-2)" }
+          }
         >
-          <span className="text-xs text-zinc-400">Drop image or click to upload</span>
-          <span className="text-[10px] text-zinc-600">PNG, JPG, WebP, GIF</span>
+          <span className="text-xs" style={{ color: "var(--fg-3)" }}>
+            Drop image or click to upload
+          </span>
+          <span className="text-[10px]" style={{ color: "var(--fg-5)" }}>
+            PNG, JPG, WebP, GIF
+          </span>
         </button>
       )}
       <input
