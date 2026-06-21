@@ -2,7 +2,6 @@
 
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { GridEditorPanel } from "@/components/editor/GridEditorPanel";
-import Link from "next/link";
 import { ExportModal } from "@/components/export/ExportModal";
 import { CharsetSelector } from "@/components/studio/CharsetSelector";
 import { ColorPicker } from "@/components/studio/ColorPicker";
@@ -16,6 +15,7 @@ import { WidthSlider } from "@/components/studio/WidthSlider";
 import { useGenerator } from "@/hooks/useGenerator";
 import { useImageGenerator } from "@/hooks/useImageGenerator";
 import { type AsciiGrid, type AvailableFontName, DEFAULT_FONT, type RGBColor } from "@textil/core";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 function Divider() {

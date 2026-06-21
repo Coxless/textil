@@ -7,10 +7,7 @@ export const metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div
-      className="min-h-screen"
-      style={{ background: "var(--bg)", color: "var(--fg)" }}
-    >
+    <div className="min-h-screen" style={{ background: "var(--bg)", color: "var(--fg)" }}>
       <div className="max-w-2xl mx-auto px-6 py-16">
         {/* Header */}
         <div className="mb-12">
@@ -37,7 +34,10 @@ export default function PrivacyPage() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-8 text-sm leading-relaxed" style={{ color: "var(--fg-2)" }}>
+        <div
+          className="flex flex-col gap-8 text-sm leading-relaxed"
+          style={{ color: "var(--fg-2)" }}
+        >
           {/* Core principle */}
           <section
             className="rounded-xl p-5"
@@ -61,8 +61,8 @@ export default function PrivacyPage() {
             <ul className="flex flex-col gap-2" style={{ color: "var(--fg-3)" }}>
               <li className="flex gap-2">
                 <span style={{ color: "var(--fg-4)" }}>—</span>
-                All font rendering, image processing, and ASCII generation runs entirely on-device via
-                WebAssembly and the Canvas API.
+                All font rendering, image processing, and ASCII generation runs entirely on-device
+                via WebAssembly and the Canvas API.
               </li>
               <li className="flex gap-2">
                 <span style={{ color: "var(--fg-4)" }}>—</span>
