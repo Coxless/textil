@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import StudioShell from "./StudioShell";
 
-export default function StudioRedirect() {
-  redirect("/");
+export default function StudioPage() {
+  return <StudioShell />;
 }

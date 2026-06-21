@@ -26,8 +26,16 @@ export function CharsetSelector({ value, onChange }: CharsetSelectorProps) {
             className="flex-1 rounded-md px-2 py-1.5 text-xs font-medium transition-colors"
             style={
               cs.value === value
-                ? { border: "1px solid var(--fg-3)", background: "var(--surf-3)", color: "var(--fg)" }
-                : { border: "1px solid var(--bd-2)", background: "var(--surf-2)", color: "var(--fg-3)" }
+                ? {
+                    border: "1px solid var(--fg-3)",
+                    background: "var(--surf-3)",
+                    color: "var(--fg)",
+                  }
+                : {
+                    border: "1px solid var(--bd-2)",
+                    background: "var(--surf-2)",
+                    color: "var(--fg-3)",
+                  }
             }
           >
             {cs.label}

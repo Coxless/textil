@@ -4,6 +4,34 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
+/* ── Studio design tokens (always defined; used only on /studio) ──── */
+:root {
+  --ink: #0e1726;
+  --ink-2: #16202f;
+  --ink-3: #1e2a3a;
+  --ink-4: #27374b;
+  --paper: #f4efe6;
+  --paper-2: #ebe4d6;
+  --paper-line: rgba(43, 43, 40, 0.1);
+  --graphite: #2b2b28;
+  --graphite-soft: #6b675e;
+  --amber: #e8923b;
+  --amber-2: #f2a857;
+  --amber-glow: rgba(232, 146, 59, 0.28);
+  --mist: #8a97a8;
+  --cloud: #dce3ec;
+  --cloud-dim: #aeb9c8;
+  --line: rgba(220, 227, 236, 0.1);
+  --line-2: rgba(220, 227, 236, 0.16);
+  --good: #5fb98e;
+  --r: 10px;
+  --r-sm: 7px;
+  --rail: 268px;
+  --insp: 300px;
+  --head: 56px;
+  --status: 34px;
+}
+
 *,
 *::before,
 *::after {
@@ -14,48 +42,48 @@
 
 :root {
   /* Surfaces */
-  --bg:          #f8fafc;
-  --surf:        #ffffff;
-  --surf-2:      #f1f5f9;
-  --surf-3:      #e2e8f0;
-  --surf-4:      #cbd5e1;
-  --surf-2a:     rgba(241,245,249,0.7);
-  --surf-ov:     rgba(255,255,255,0.88);
+  --bg: #f8fafc;
+  --surf: #ffffff;
+  --surf-2: #f1f5f9;
+  --surf-3: #e2e8f0;
+  --surf-4: #cbd5e1;
+  --surf-2a: rgba(241, 245, 249, 0.7);
+  --surf-ov: rgba(255, 255, 255, 0.88);
 
   /* Text */
-  --fg:          #0f172a;
-  --fg-2:        #334155;
-  --fg-3:        #64748b;
-  --fg-4:        #94a3b8;
-  --fg-5:        #cbd5e1;
+  --fg: #0f172a;
+  --fg-2: #334155;
+  --fg-3: #64748b;
+  --fg-4: #94a3b8;
+  --fg-5: #cbd5e1;
 
   /* Borders */
-  --bd:          rgba(0,0,0,0.08);
-  --bd-2:        rgba(0,0,0,0.14);
+  --bd: rgba(0, 0, 0, 0.08);
+  --bd-2: rgba(0, 0, 0, 0.14);
 
   /* Dot grid */
-  --dot:         rgba(51,65,85,0.08);
+  --dot: rgba(51, 65, 85, 0.08);
 }
 
 .dark {
-  --bg:          #030711;
-  --surf:        #18181b;
-  --surf-2:      #27272a;
-  --surf-3:      #3f3f46;
-  --surf-4:      #52525b;
-  --surf-2a:     rgba(39,39,42,0.6);
-  --surf-ov:     rgba(24,24,27,0.85);
+  --bg: #030711;
+  --surf: #18181b;
+  --surf-2: #27272a;
+  --surf-3: #3f3f46;
+  --surf-4: #52525b;
+  --surf-2a: rgba(39, 39, 42, 0.6);
+  --surf-ov: rgba(24, 24, 27, 0.85);
 
-  --fg:          #f4f4f5;
-  --fg-2:        #d4d4d8;
-  --fg-3:        #a1a1aa;
-  --fg-4:        #71717a;
-  --fg-5:        #52525b;
+  --fg: #f4f4f5;
+  --fg-2: #d4d4d8;
+  --fg-3: #a1a1aa;
+  --fg-4: #71717a;
+  --fg-5: #52525b;
 
-  --bd:          rgba(255,255,255,0.07);
-  --bd-2:        rgba(255,255,255,0.13);
+  --bd: rgba(255, 255, 255, 0.07);
+  --bd-2: rgba(255, 255, 255, 0.13);
 
-  --dot:         rgba(148,163,184,0.055);
+  --dot: rgba(148, 163, 184, 0.055);
 }
 
 html,

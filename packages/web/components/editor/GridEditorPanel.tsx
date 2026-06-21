@@ -1,7 +1,7 @@
 "use client";
 
 import { useGridEditor } from "@/hooks/useGridEditor";
-import type { AsciiGrid, Cell, Rect, RGBColor } from "@textil/core";
+import type { AsciiGrid, Cell, RGBColor, Rect } from "@textil/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FindReplacePanel } from "./FindReplacePanel";
 import { GridCanvas } from "./GridCanvas";
@@ -16,18 +16,8 @@ interface GridEditorPanelProps {
 }
 
 export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProps) {
-  const {
-    grid,
-    setRegion,
-    textInsert,
-    moveRegion,
-    deleteRegion,
-    findReplace,
-    undo,
-    redo,
-    canUndo,
-    canRedo,
-  } = useGridEditor(initialGrid);
+  const { grid, setRegion, moveRegion, deleteRegion, findReplace, undo, redo, canUndo, canRedo } =
+    useGridEditor(initialGrid);
 
   const [tool, setTool] = useState<EditorTool>("pencil");
   const [zoom, setZoom] = useState(100);
@@ -164,10 +154,9 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
         }
         if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
           e.preventDefault();
-          setRegion(
-            { row: currentCursor.row, col: currentCursor.col, width: 1, height: 1 },
-            [[{ char: e.key, fg: penColorRef.current }]],
-          );
+          setRegion({ row: currentCursor.row, col: currentCursor.col, width: 1, height: 1 }, [
+            [{ char: e.key, fg: penColorRef.current }],
+          ]);
           setCursor(
             (c) => c && { row: c.row, col: Math.min(c.col + 1, gridRef.current.width - 1) },
           );
@@ -185,7 +174,7 @@ export function GridEditorPanel({ initialGrid, onExitEdit }: GridEditorPanelProp
 
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [undo, redo, changeTool, setRegion, textInsert, deleteRegion]);
+  }, [undo, redo, changeTool, setRegion, deleteRegion]);
 
   const handlePointerDown = useCallback(
     (row: number, col: number) => {

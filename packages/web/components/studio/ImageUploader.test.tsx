@@ -11,7 +11,7 @@ function makeMockFileReader(buffer: ArrayBuffer = new ArrayBuffer(4)) {
     readAsArrayBuffer(_file: Blob) {
       setTimeout(() => {
         this.result = buffer;
-        this.onload?.({ target: this } as ProgressEvent<FileReader>);
+        this.onload?.({ target: this } as unknown as ProgressEvent<FileReader>);
       }, 0);
     }
   };

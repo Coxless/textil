@@ -26,6 +26,9 @@ describe("FontPicker", () => {
   it("highlights the selected font", () => {
     render(<FontPicker value="slant" onChange={() => {}} />);
     const selected = screen.getByText("slant").closest("button");
-    expect(selected?.className).toContain("border-zinc-400");
+    const other = screen.getByText("doom").closest("button");
+    // selected button has surf-3 background; others have surf-2
+    expect(selected?.style.background).toContain("surf-3");
+    expect(other?.style.background).toContain("surf-2");
   });
 });

@@ -25,6 +25,9 @@ describe("CharsetSelector", () => {
   it("applies active styling to the selected charset", () => {
     render(<CharsetSelector value="braille" onChange={vi.fn()} />);
     const brailleBtn = screen.getByRole("button", { name: "Braille" });
-    expect(brailleBtn.className).toContain("bg-zinc-700");
+    const standardBtn = screen.getByRole("button", { name: "Standard" });
+    // selected button uses surf-3 background; unselected uses surf-2
+    expect(brailleBtn.style.background).toContain("surf-3");
+    expect(standardBtn.style.background).toContain("surf-2");
   });
 });
