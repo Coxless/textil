@@ -98,7 +98,7 @@ export function ImageUploader({ onImageLoad, onClear }: ImageUploaderProps) {
           <span className="text-xs" style={{ color: "var(--fg-3)" }}>
             Drop image or click to upload
           </span>
-          <span className="text-[10px]" style={{ color: "var(--fg-5)" }}>
+          <span className="text-xs" style={{ color: "var(--fg-4)" }}>
             PNG, JPG, WebP, GIF
           </span>
         </button>

@@ -65,7 +65,7 @@ export default function StudioPage() {
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
       <aside
-        className="scrollbar-thin flex w-72 shrink-0 flex-col overflow-y-auto backdrop-blur-xl"
+        className="flex w-72 shrink-0 flex-col backdrop-blur-xl"
         style={{
           background: "var(--surf)",
           borderRight: "1px solid var(--bd)",
@@ -88,15 +88,15 @@ export default function StudioPage() {
             textil
           </span>
           <span
-            className="text-[9px] px-1.5 py-0.5 rounded font-mono uppercase tracking-[0.15em]"
-            style={{ background: "var(--surf-2)", color: "var(--fg-4)" }}
+            className="text-[11px] px-1.5 py-0.5 rounded font-mono uppercase tracking-[0.15em]"
+            style={{ background: "var(--surf-2)", color: "var(--fg-3)" }}
           >
             studio
           </span>
           <ThemeToggle />
         </div>
 
-        <div className="flex flex-col gap-4 p-5 flex-1 min-h-0">
+        <div className="scrollbar-thin flex flex-col gap-4 p-5 flex-1 overflow-y-auto min-h-0">
           {/* Mode toggle */}
           <div
             className="flex p-0.5 rounded-lg"
@@ -115,7 +115,7 @@ export default function StudioPage() {
                         color: "var(--fg)",
                         boxShadow: "0 1px 2px var(--bd)",
                       }
-                    : { color: "var(--fg-4)" }
+                    : { color: "var(--fg-3)" }
                 }
               >
                 {m}
@@ -204,8 +204,8 @@ export default function StudioPage() {
             href="https://github.com/Coxless/textil"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-[10px] transition-colors"
-            style={{ color: "var(--fg-4)" }}
+            className="flex items-center gap-1.5 text-xs transition-colors"
+            style={{ color: "var(--fg-3)" }}
             title="View source on GitHub"
           >
             <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -215,8 +215,8 @@ export default function StudioPage() {
           </a>
           <Link
             href="/privacy"
-            className="text-[10px] transition-colors"
-            style={{ color: "var(--fg-4)" }}
+            className="text-xs transition-colors"
+            style={{ color: "var(--fg-3)" }}
           >
             Privacy
           </Link>
